@@ -2,13 +2,13 @@ const products = [
   {
     name: "Clay Burst Booster Pack (Sealed) | Korean [sv2D]",
     price: 170,
-    image: "https://static.wixstatic.com/media/25c29c_91b0000b075348c43a0e1898297e7ed-mv2.png",
+    image: "https://i.ebayimg.com/images/g/1bUAAOSwTlVg3Juu/s-l1600.jpg",
     stock: true
   },
   {
     name: "InfernoX Booster Box (Sealed) | Korean",
     price: 4599,
-    image: "https://static.wixstatic.com/media/25c29c_10deb9c086c4eb59734d91801be103e-mv2.png",
+    image: "https://i.ebayimg.com/images/g/AdoAAOSw2I1g3JqN/s-l1600.jpg",
     stock: true
   }
 ];
