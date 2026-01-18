@@ -20,8 +20,7 @@
   <hr>
 
   <h2>Pay via UPI</h2>
-  <p>Scan the QR code below and pay ₹399</p>
-
+  <p>Scan the QR code below and pay ₹<span id="payAmount"></span></p>
   <!-- 🔴 REPLACE THIS IMAGE -->
   <img src="upi-qr.png" alt="UPI QR Code" class="qr">
 
@@ -31,9 +30,8 @@
   </p>
 
   <!-- 🔴 REPLACE PHONE NUMBER -->
-  <a class="whatsapp-btn"
-     href="https://wa.me/919836190283?text=Hello%2C%20I%20have%20paid"
-     I Have Paid – Send Screenshot
+  <a class="whatsapp-btn" href="#" target="_blank">
+  I Have Paid – Send Screenshot
   </a>
 
 </div>
@@ -48,6 +46,7 @@
 
   document.getElementById("productName").innerText = product || "Pokémon Item";
   document.getElementById("productPrice").innerText = price || "0";
+  document.getElementById("payAmount").innerText = price || "0";
 
   const waBtn = document.querySelector(".whatsapp-btn");
   const msg = `Hello, I have paid ₹${price} for ${product}.`;
