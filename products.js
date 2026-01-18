@@ -2,13 +2,13 @@ const products = [
   {
     name: "Clay Burst Booster Pack (Sealed) | Korean [sv2D]",
     price: 200,
-    image: "image: "images/compressed_1768754461486.png",
+    image: "images/sv-booster-pack.jpg",
     stock: true
   },
   {
     name: "InfernoX Booster Box (Sealed) | Korean",
     price: 4599,
-    image: "images/compressed_1768754461486.png",
+    image: "images/sv-booster-box.jpg",
     stock: true
   }
 ];
@@ -34,3 +34,4 @@ products.forEach(p => {
 
   container.appendChild(card);
 });
+
