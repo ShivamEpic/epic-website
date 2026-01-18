@@ -1,8 +1,8 @@
 const products = [
   {
     name: "Clay Burst Booster Pack (Sealed) | Korean [sv2D]",
-    price: 170,
-    image: "https://i.ebayimg.com/images/g/1bUAAOSwTlVg3Juu/s-l1600.jpg",
+    price: 200,
+    image: "image: "images/compressed_1768754461486.png",
     stock: true
   },
   {
