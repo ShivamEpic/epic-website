@@ -8,7 +8,7 @@ const products = [
   {
     name: "InfernoX Booster Box (Sealed) | Korean",
     price: 4599,
-    image: "https://i.ebayimg.com/images/g/AdoAAOSw2I1g3JqN/s-l1600.jpg",
+    image: "images/compressed_1768754461486.png",
     stock: true
   }
 ];
