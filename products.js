@@ -1,7 +1,7 @@
 const products = [
   {
     name: "Clay Burst Booster Pack (Sealed) | Korean [sv2D]",
-    price: 200,
+    price: 170,
     image: "images/sv-booster-pack.jpg",
     stock: true
   },
@@ -34,4 +34,3 @@ products.forEach(p => {
 
   container.appendChild(card);
 });
-
