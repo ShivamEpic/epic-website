@@ -1,8 +1,6 @@
-images/
-├─ sv-booster-pack.jpg
-├─ sv-booster-box.jpg
-├─ rare-card.png
-epic-website/
- └── images/
-     └── compressed_1768754461486.png
-
+├── index.html
+├── products.js
+├── checkout.html
+├── style.css
+├── images/
+│   └── compressed_1768754461486.png
