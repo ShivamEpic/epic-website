@@ -1,21 +1,21 @@
 const products = [
   {
-    name: "Scarlet & Violet Booster Pack",
-    price: 399,
+    name: "
+Clay Burst Booster Pack (Sealed) | Korean [sv2D]",
+    price: 170,
     image: "images/sv-booster-pack.jpg",
     stock: true
   },
   {
-    name: "Booster Box – Scarlet & Violet",
-    price: 4999,
-    image: "https://m.media-amazon.com/images/I/81WDYOQ-MZL._SX679_.jpg",
-    stock: false
+    name: "Booster Box – 
+InfernoX Booster Box (Sealed) | Korean [m2]
+",
+    price: 4599,
+    image: "https://static.wixstatic.com/media/25c29c_10deb9c0868c4eb59734d91801be103e~mv2.png/v1/fill/w_420,h_420,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/25c29c_10deb9c0868c4eb59734d91801be103e~mv2.png",
+    stock: true
   },
   {
-    name: "Rare Pokémon Card",
-    price: 499,
-    image: "https://assets.pokemon.com/assets/cms2/img/cards/web/SV01/SV01_EN_1.png",
-    stock: true
+
   }
 ];
 
