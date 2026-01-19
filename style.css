@@ -4,7 +4,7 @@ body {
   background: #111;
   color: white;
 }
-
+<link rel="stylesheet" href="style.css?v=3">
 /* HEADER */
 .site-header {
   display: flex;
@@ -79,7 +79,55 @@ body {
   border-radius: 10px;
   text-align: center;
 }
+/* ===== CHECKOUT PAGE BIG TEXT FIX ===== */
 
+.checkout-box {
+  max-width: 520px;
+  margin: auto;
+  padding: 24px;
+}
+
+header h1 {
+  font-size: 36px;
+}
+
+header p {
+  font-size: 18px;
+}
+
+.checkout-box h2 {
+  font-size: 26px;
+  margin-top: 24px;
+}
+
+.checkout-box p {
+  font-size: 20px;
+}
+
+#productName {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+#productPrice,
+#payAmount {
+  font-size: 26px;
+  font-weight: bold;
+  color: #00ff88;
+}
+
+.qr {
+  width: 100%;
+  max-width: 360px;
+  margin: 24px auto;
+  display: block;
+}
+
+.whatsapp-btn {
+  font-size: 20px;
+  padding: 18px;
+  border-radius: 10px;
+}
 .card img {
   width: 100%;
   border-radius: 8px;
