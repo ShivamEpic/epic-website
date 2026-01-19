@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>🛠 Admin Orders Panel</h1>
+
+<div id="adminOrders"></div>
+
+<script>
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+const adminBox = document.getElementById("adminOrders");
+
+function renderAdmin() {
+  adminBox.innerHTML = "";
+
+  orders.forEach((o, i) => {
+    adminBox.innerHTML += `
+      <div class="order-card">
+        <p><b>${o.orderId}</b></p>
+        <p>${o.products}</p>
+        <p>₹${o.amount}</p>
+        <p>Status: <b>${o.status}</b></p>
+
+        <button onclick="updateStatus(${i}, 'Payment Verified')">Verify</button>
+        <button onclick="updateStatus(${i}, 'Packing')">Pack</button>
+        <button onclick="updateStatus(${i}, 'Shipped')">Ship</button>
+        <button onclick="updateStatus(${i}, 'Cancelled')">Cancel</button>
+      </div>
+    `;
+  });
+}
+
+function updateStatus(index, status) {
+  orders[index].status = status;
+  localStorage.setItem("orders", JSON.stringify(orders));
+  renderAdmin();
+}
+
+renderAdmin();
+</script>
+
+</body>
+</html>
