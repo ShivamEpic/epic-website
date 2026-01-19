@@ -57,12 +57,19 @@ I Have Paid – Send Screenshot
     price || "0";
 
   const waBtn = document.getElementById("whatsappBtn");
-  const msg = `Hello, I have completed the payment.
+ const waBtn = document.getElementById("whatsappBtn");
+
+const msg = `Hello, I have completed the payment.
 
 Product: ${product}
 Amount: ₹${price}
 
 Please find the payment screenshot attached.`;
+
+waBtn.href =
+  "https://wa.me/919836190283?text=" +
+  encodeURIComponent(msg);
+
   waBtn.href =
     "https://wa.me/919836190283?text=" +
     encodeURIComponent(msg);
