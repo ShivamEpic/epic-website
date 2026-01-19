@@ -2,29 +2,51 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Pokémon TCG Store</title>
+  <title>Pokédork | Home</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <header class="topbar">
-    <h1>Pokémon TCG Store</h1>
+<header class="site-header">
+  <div class="nav-left" onclick="toggleMenu()">☰</div>
 
-    <nav class="navbar">
-      <a href="index.html">Home</a>
-      <a href="account.html">My Account</a>
-      <a href="orders.html">Orders</a>
-    </nav>
+  <div class="nav-center">
+    <span class="logo-text">POKEDORK</span>
+  </div>
 
-    <p>Cards • Booster Packs • Booster Boxes</p>
-  </header>
+  <div class="nav-right">
+    <span class="icon">🔍</span>
+    <a href="cart.html" class="icon">🛒 <span id="cartCount">0</span></a>
+  </div>
+</header>
 
-  <!-- PRODUCTS LOAD HERE -->
-  <main class="products" id="productList"></main>
+<div id="sideMenu" class="side-menu">
+  <a href="index.html">🏠 Home</a>
+  <a href="account.html">👤 My Account</a>
+  <a href="orders.html">📦 Orders</a>
+  <a href="cart.html">🛒 Cart</a>
+</div>
 
-  <!-- PRODUCTS SCRIPT -->
-  <script src="products.js"></script>
+<section class="hero">
+  <h1>BUY GENUINE POKÉMON CARDS IN INDIA 🇮🇳</h1>
+  <button class="buy-btn">Buy Now</button>
+</section>
+
+<h2 class="section-title">🔥 Featured Products 🔥</h2>
+
+<div id="productList" class="product-grid"></div>
+
+<script src="products.js"></script>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById("sideMenu");
+  menu.style.left = menu.style.left === "0px" ? "-250px" : "0px";
+}
+
+const cart = JSON.parse(localStorage.getItem("cart")) || [];
+document.getElementById("cartCount").innerText = cart.length;
+</script>
 
 </body>
 </html>
