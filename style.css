@@ -116,3 +116,78 @@ body {
 .page-box {
   padding: 20px;
 }
+/* ===== CHECKOUT PAGE BIG TEXT FIX ===== */
+
+/* HEADER */
+header h1 {
+  font-size: 32px; /* BIG Checkout title */
+  margin-bottom: 10px;
+}
+
+header p {
+  font-size: 18px;
+  color: #ccc;
+}
+
+/* SECTION TITLES */
+.checkout-box h2 {
+  font-size: 24px;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+/* NORMAL TEXT */
+.checkout-box p {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+/* PRODUCT NAME */
+#productName {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* PRICE + PAY AMOUNT */
+#productPrice,
+#payAmount {
+  font-size: 22px;
+  font-weight: bold;
+  color: #00ff88;
+}
+
+/* QR IMAGE */
+.qr {
+  display: block;
+  margin: 20px auto;
+  max-width: 320px;
+}
+
+/* NOTE TEXT */
+.note {
+  font-size: 16px;
+  margin-top: 15px;
+  color: #ddd;
+}
+
+/* WHATSAPP BUTTON */
+.whatsapp-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  padding: 16px;
+  margin-top: 25px;
+  background: #25d366;
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+/* FOOTER */
+footer p {
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 30px;
+  text-align: center;
+}
