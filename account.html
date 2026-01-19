@@ -1,21 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>My Account</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h2>My Account</h2>
+<header class="topbar">
+  <h1>My Account</h1>
 
-<p><strong>Name:</strong> Customer</p>
-<p><strong>Orders:</strong></p>
+  <nav class="navbar">
+    <a href="index.html">Home</a>
+    <a href="orders.html">My Orders</a>
+  </nav>
+</header>
 
-<ul>
-  <li>Order #1001 – <b>Confirmed</b></li>
-</ul>
+<main class="account">
+  <div class="account-card">
+    <p><strong>Name:</strong> Customer</p>
+    <p><strong>Contact:</strong> WhatsApp</p>
 
-<a href="index.html">⬅ Back to Home</a>
+    <a class="whatsapp-btn"
+       href="https://wa.me/919836190283"
+       target="_blank">
+       📲 Contact on WhatsApp
+    </a>
+  </div>
+</main>
 
 </body>
 </html>
