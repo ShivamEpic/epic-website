@@ -1,49 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Your Cart – Pokémon TCG Store</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Your Cart | Pokémon TCG Store</title>
+
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #ffcc00;
+      padding: 15px;
+      text-align: center;
+    }
+
     .cart-container {
-      max-width: 900px;
-      margin: 30px auto;
+      max-width: 800px;
+      margin: 20px auto;
       background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-    }
-    .cart-item {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      border-bottom: 1px solid #ddd;
-      padding: 15px 0;
-    }
-    .cart-item img {
-      width: 80px;
+      padding: 15px;
       border-radius: 8px;
     }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    .cart-item h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .cart-item p {
+      margin: 5px 0;
+    }
+
     .cart-item button {
       background: red;
-      color: white;
+      color: #fff;
       border: none;
-      padding: 6px 10px;
+      padding: 5px 8px;
       cursor: pointer;
-      border-radius: 5px;
+      border-radius: 4px;
     }
+
+    .qty-btn {
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 4px 8px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin: 0 3px;
+    }
+
     .checkout-btn {
+      width: 100%;
       background: green;
-      color: white;
+      color: #fff;
       padding: 12px;
       border: none;
-      width: 100%;
       font-size: 16px;
-      margin-top: 20px;
       cursor: pointer;
       border-radius: 6px;
+      margin-top: 15px;
+    }
+
+    .empty {
+      text-align: center;
+      color: #666;
     }
   </style>
 </head>
+
 <body>
 
 <header>
@@ -51,49 +88,77 @@
   <p>Review your items before checkout</p>
 </header>
 
-<div class="cart-container" id="cartContainer"></div>
+<div class="cart-container">
+  <div id="cartContainer"></div>
+
+  <h3>Total: <span id="totalAmount">₹0</span></h3>
+
+  <button class="checkout-btn" onclick="goCheckout()">
+    Proceed to Checkout
+  </button>
+</div>
 
 <script>
-  const cartContainer = document.getElementById("cartContainer");
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cartBox = document.getElementById("cartContainer");
+  const totalBox = document.getElementById("totalAmount");
 
-  if (cart.length === 0) {
-    cartContainer.innerHTML = "<p>Your cart is empty.</p>";
-  } else {
+  function renderCart() {
+    cartBox.innerHTML = "";
     let total = 0;
 
-    cart.forEach((item, index) => {
-      total += item.price;
+    if (cart.length === 0) {
+      cartBox.innerHTML = "<p class='empty'>Your cart is empty</p>";
+      totalBox.innerText = "₹0";
+      return;
+    }
 
-      cartContainer.innerHTML += `
+    cart.forEach((item, index) => {
+      item.qty = item.qty || 1;
+      total += item.price * item.qty;
+
+      cartBox.innerHTML += `
         <div class="cart-item">
-          <img src="${item.image}">
           <div>
             <h3>${item.name}</h3>
             <p>₹${item.price}</p>
-            <button onclick="removeItem(${index})">Remove</button>
+            <button class="qty-btn" onclick="changeQty(${index}, -1)">−</button>
+            <span>${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
           </div>
+          <button onclick="removeItem(${index})">Remove</button>
         </div>
       `;
     });
 
-    cartContainer.innerHTML += `
-      <h2>Total: ₹${total}</h2>
-      <button class="checkout-btn" onclick="goToCheckout(${total})">
-        Proceed to Checkout
-      </button>
-    `;
+    totalBox.innerText = "₹" + total;
+  }
+
+  function changeQty(index, change) {
+    cart[index].qty += change;
+    if (cart[index].qty < 1) cart[index].qty = 1;
+    saveCart();
   }
 
   function removeItem(index) {
     cart.splice(index, 1);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    location.reload();
+    saveCart();
   }
 
-  function goToCheckout(total) {
-    window.location.href = "checkout.html?product=Cart Items&price=" + total;
+  function saveCart() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
   }
+
+  function goCheckout() {
+    if (cart.length === 0) {
+      alert("Cart is empty!");
+      return;
+    }
+    window.location.href = "checkout.html";
+  }
+
+  renderCart();
 </script>
 
 </body>
