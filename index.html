@@ -5,22 +5,26 @@
   <title>Pokémon TCG Store</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header>
-  <h1>Pokémon TCG Store</h1>
-  <p>Cards • Booster Packs • Booster Boxes</p>
-</header>
+  <header class="topbar">
+    <h1>Pokémon TCG Store</h1>
 
-<!-- THIS ID MUST MATCH products.js -->
-<main class="products" 
-  id="productList"></main>
+    <nav class="navbar">
+      <a href="index.html">Home</a>
+      <a href="account.html">My Account</a>
+      <a href="orders.html">Orders</a>
+    </nav>
 
-<!-- LOAD ONLY THIS FILE -->
-<script src="products.js"></script>
+    <p>Cards • Booster Packs • Booster Boxes</p>
+  </header>
+
+  <!-- PRODUCTS LOAD HERE -->
+  <main class="products" id="productList"></main>
+
+  <!-- PRODUCTS SCRIPT -->
+  <script src="products.js"></script>
+
 </body>
-  <nav class="navbar">
-  <a href="index.html">Home</a>
-  <a href="account.html">My Account</a>
-  </nav>
 </html>
