@@ -8,23 +8,31 @@ body {
 /* HEADER */
 .site-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   background: black;
-  padding: 14px;
+  padding: 18px;
 }
-
+.logo-text {
+  font-size: 36px;       /* BIG */
+  font-weight: 900;
+  text-align: center;
+  flex: 1;               /* centers in header */
+}
 .logo-text {
   font-size: 26px;
   font-weight: bold;
 }
 
 .icon {
-  font-size: 22px;
+  .header-icons {
+  display: flex;
+  align-items: center;
+  }
+  font-size: 30px;     /* BIG ICONS */
   color: white;
   text-decoration: none;
+  margin-left: 16px;
 }
-
 /* SIDE MENU */
 .side-menu {
   position: fixed;
