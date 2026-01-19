@@ -66,13 +66,32 @@ Amount: ₹${price}
 
 Please find the payment screenshot attached.`;
 
-waBtn.href =
-  "https://wa.me/919836190283?text=" +
-  encodeURIComponent(msg);
+const orderId = "ORD" + Date.now();
 
-  waBtn.href =
-    "https://wa.me/919836190283?text=" +
-    encodeURIComponent(msg);
+const msg = `Hello, I have completed the payment.
+
+Order ID: ${orderId}
+Product: ${product}
+Amount: ₹${price}
+
+Please find the payment screenshot attached.`;
+
+waBtn.href =
+"https://wa.me/919836190283?text=" +
+encodeURIComponent(msg);
+
+// save order
+localStorage.setItem("orderId", orderId);
+localStorage.setItem("orderProduct", product);
+localStorage.setItem("orderAmount", price);
+
+// auto redirect after click
+waBtn.addEventListener("click", () => {
+  setTimeout(() => {
+    window.location.href = "order-confirmed.html";
+  }, 1000);
+});
+
 </script>
 </script>
 </body>
