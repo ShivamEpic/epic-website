@@ -1,164 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>Your Cart | Pokémon TCG Store</title>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background: #ffcc00;
-      padding: 15px;
-      text-align: center;
-    }
-
-    .cart-container {
-      max-width: 800px;
-      margin: 20px auto;
-      background: #fff;
-      padding: 15px;
-      border-radius: 8px;
-    }
-
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #ddd;
-      padding: 10px 0;
-    }
-
-    .cart-item h3 {
-      margin: 0;
-      font-size: 16px;
-    }
-
-    .cart-item p {
-      margin: 5px 0;
-    }
-
-    .cart-item button {
-      background: red;
-      color: #fff;
-      border: none;
-      padding: 5px 8px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-
-    .qty-btn {
-      background: #333;
-      color: #fff;
-      border: none;
-      padding: 4px 8px;
-      cursor: pointer;
-      border-radius: 4px;
-      margin: 0 3px;
-    }
-
-    .checkout-btn {
-      width: 100%;
-      background: green;
-      color: #fff;
-      padding: 12px;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 6px;
-      margin-top: 15px;
-    }
-
-    .empty {
-      text-align: center;
-      color: #666;
-    }
-  </style>
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<header>
-  <h1>Your Cart</h1>
-  <p>Review your items before checkout</p>
+<header class="site-header">
+  <a href="index.html" class="icon">⬅</a>
+  <span class="logo-text">YOUR CART</span>
 </header>
 
-<div class="cart-container">
-  <div id="cartContainer"></div>
+<div id="cartItems" class="cart-box"></div>
 
-  <h3>Total: <span id="totalAmount">₹0</span></h3>
+<h2>Total: ₹<span id="total">0</span></h2>
 
-  <button class="checkout-btn" onclick="goCheckout()">
-    Proceed to Checkout
-  </button>
-</div>
+<button class="checkout-btn">Proceed to Checkout</button>
 
 <script>
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const cartBox = document.getElementById("cartContainer");
-  const totalBox = document.getElementById("totalAmount");
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+const box = document.getElementById("cartItems");
+let total = 0;
 
-  function renderCart() {
-    cartBox.innerHTML = "";
-    let total = 0;
+cart.forEach((item, index) => {
+  total += item.price;
+  box.innerHTML += `
+    <div class="cart-item">
+      <h4>${item.name}</h4>
+      <p>₹${item.price}</p>
+      <button onclick="removeItem(${index})">Remove</button>
+    </div>
+  `;
+});
 
-    if (cart.length === 0) {
-      cartBox.innerHTML = "<p class='empty'>Your cart is empty</p>";
-      totalBox.innerText = "₹0";
-      return;
-    }
+document.getElementById("total").innerText = total;
 
-    cart.forEach((item, index) => {
-      item.qty = item.qty || 1;
-      total += item.price * item.qty;
-
-      cartBox.innerHTML += `
-        <div class="cart-item">
-          <div>
-            <h3>${item.name}</h3>
-            <p>₹${item.price}</p>
-            <button class="qty-btn" onclick="changeQty(${index}, -1)">−</button>
-            <span>${item.qty}</span>
-            <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
-          </div>
-          <button onclick="removeItem(${index})">Remove</button>
-        </div>
-      `;
-    });
-
-    totalBox.innerText = "₹" + total;
-  }
-
-  function changeQty(index, change) {
-    cart[index].qty += change;
-    if (cart[index].qty < 1) cart[index].qty = 1;
-    saveCart();
-  }
-
-  function removeItem(index) {
-    cart.splice(index, 1);
-    saveCart();
-  }
-
-  function saveCart() {
-    localStorage.setItem("cart", JSON.stringify(cart));
-    renderCart();
-  }
-
-  function goCheckout() {
-    if (cart.length === 0) {
-      alert("Cart is empty!");
-      return;
-    }
-    window.location.href = "checkout.html";
-  }
-
-  renderCart();
+function removeItem(index) {
+  cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  location.reload();
+}
 </script>
 
 </body>
