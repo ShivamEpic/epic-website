@@ -45,43 +45,38 @@
 </footer>
 
 <script>
-  // GET URL PARAMETERS
   const params = new URLSearchParams(window.location.search);
-  const product = params.get("product");
-  const price = params.get("price");
 
-  // CREATE ORDER ID
-  const orderId = "ORD" + Date.now();
+  let product = params.get("product");
+  let price = params.get("price");
 
-  // DISPLAY DATA
+  // 👉 If coming from CART (no URL params)
+  if (!price) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    if (cart.length > 0) {
+      product = cart.map(i => i.name).join(", ");
+      price = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+    }
+  }
+
   document.getElementById("productName").innerText =
     product || "Pokémon Item";
 
-  document.getElementById("productPrice").innerText =
-    price ? "₹" + price : "₹0";
+  document.getElementById("productPrice").innerText = "₹" + (price || 0);
+  document.getElementById("payAmount").innerText = "₹" + (price || 0);
 
-  document.getElementById("payAmount").innerText =
-    price || "0";
-
-  // SAVE ORDER (FOR STATUS PAGE)
-  localStorage.setItem("orderId", orderId);
-  localStorage.setItem("orderProduct", product);
-  localStorage.setItem("orderAmount", price);
-
-  // WHATSAPP MESSAGE
+  // WhatsApp message
   const waBtn = document.getElementById("whatsappBtn");
+  const msg =
+  `Hello, I have completed the payment.
 
-  const msg = `Hello, I have completed the payment.
-
-Order ID: ${orderId}
 Product: ${product}
 Amount: ₹${price}
 
 Please find the payment screenshot attached.`;
-
   waBtn.href =
-    "https://wa.me/919836190283?text=" +
-    encodeURIComponent(msg);
+    "https://wa.me/919836190283?text=" + encodeURIComponent(msg);
 </script>
 
 </body>
