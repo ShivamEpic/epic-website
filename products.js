@@ -39,7 +39,7 @@ products.forEach((p, index) => {
   p.stock
     ? `
       <button onclick="addToCart(${index})">Add to Cart</button>
-      <a href="checkout.html?product=${encodeURIComponent(p.name)}&price=${p.price}">
+      <a href="cart.html"><button>View Cart</button></a>
         <button>Buy Now</button>
       </a>
     `
