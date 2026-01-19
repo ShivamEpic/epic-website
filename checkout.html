@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Checkout – Pokémon TCG Store</title>
+  <title>Checkout - Pokémon TCG Store</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,27 +16,26 @@
 
   <h2>Order Summary</h2>
   <p><strong>Product:</strong> <span id="productName"></span></p>
-<p><strong>Amount:</strong> ₹<span id="productPrice"></span></p>
+  <p><strong>Amount:</strong> <span id="productPrice"></span></p>
   <hr>
 
   <h2>Pay via UPI</h2>
-  <p>Scan the QR code below and pay ₹<span id="payAmount"></span></p>
-  <!-- 🔴 REPLACE THIS IMAGE -->
+  <p>Scan the QR code below and pay <strong>₹<span id="payAmount"></span></strong></p>
+
+  <!-- QR IMAGE -->
   <img src="upi-qr.png" alt="UPI QR Code" class="qr">
 
-
-
   <p class="note">
-    After successful payment, click the button below and send
-    your <strong>payment screenshot</strong> on WhatsApp.
+    After successful payment, click the button below and send your
+    <strong>payment screenshot</strong> on WhatsApp.
   </p>
 
-  <!-- 🔴 REPLACE PHONE NUMBER -->
+  <!-- WHATSAPP BUTTON -->
   <a
-  class="whatsapp-btn"
-  id="whatsappBtn"
-  target="_blank">
-I Have Paid – Send Screenshot
+    class="whatsapp-btn"
+    id="whatsappBtn"
+    target="_blank">
+    I Have Paid – Send Screenshot
   </a>
 
 </div>
@@ -44,31 +43,35 @@ I Have Paid – Send Screenshot
 <footer>
   <p>© 2026 Pokémon TCG Store</p>
 </footer>
-  <script>
+
+<script>
+  // GET URL PARAMETERS
   const params = new URLSearchParams(window.location.search);
   const product = params.get("product");
   const price = params.get("price");
 
+  // CREATE ORDER ID
+  const orderId = "ORD" + Date.now();
+
+  // DISPLAY DATA
   document.getElementById("productName").innerText =
     product || "Pokémon Item";
+
   document.getElementById("productPrice").innerText =
     price ? "₹" + price : "₹0";
+
   document.getElementById("payAmount").innerText =
     price || "0";
 
+  // SAVE ORDER (FOR STATUS PAGE)
+  localStorage.setItem("orderId", orderId);
+  localStorage.setItem("orderProduct", product);
+  localStorage.setItem("orderAmount", price);
+
+  // WHATSAPP MESSAGE
   const waBtn = document.getElementById("whatsappBtn");
- const waBtn = document.getElementById("whatsappBtn");
 
-const msg = `Hello, I have completed the payment.
-
-Product: ${product}
-Amount: ₹${price}
-
-Please find the payment screenshot attached.`;
-
-const orderId = "ORD" + Date.now();
-
-const msg = `Hello, I have completed the payment.
+  const msg = `Hello, I have completed the payment.
 
 Order ID: ${orderId}
 Product: ${product}
@@ -76,23 +79,10 @@ Amount: ₹${price}
 
 Please find the payment screenshot attached.`;
 
-waBtn.href =
-"https://wa.me/919836190283?text=" +
-encodeURIComponent(msg);
-
-// save order
-localStorage.setItem("orderId", orderId);
-localStorage.setItem("orderProduct", product);
-localStorage.setItem("orderAmount", price);
-
-// auto redirect after click
-waBtn.addEventListener("click", () => {
-  setTimeout(() => {
-    window.location.href = "order-confirmed.html";
-  }, 1000);
-});
-
+  waBtn.href =
+    "https://wa.me/919836190283?text=" +
+    encodeURIComponent(msg);
 </script>
-</script>
+
 </body>
 </html>
