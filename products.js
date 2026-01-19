@@ -2,25 +2,25 @@ const products = [
   {
     name: "Clay Burst Booster Pack (Sealed) | Korean [sv2D]",
     price: 200,
-    image: "images/sv2d-clay-burst-pack.png",
+    image: "sv2d-clay-burst-pack.png",
     stock: true
   },
   {
     name: "InfernoX Booster Box (Sealed) | Korean",
     price: 4599,
-    image: "images/inferno-booster-box.png",
+    image: "inferno-booster-box.png",
     stock: true
   },
   {
     name: "Tsareena ex SR 080/066 | Ancient Roar [SV4K]",
     price: 400,
-    image: "images/tsareena-ex-sv4k-080.png",
+    image: "tsareena-ex-sv4k-080.png",
     stock: true
   },
   {
     name: "Battle Partners Booster Pack Korean (Sealed)",
     price: 250,
-    image: "images/battle-partners-sv9-korean.png",
+    image: "battle-partners-sv9-korean.png",
     stock: true
   }
 ];
