@@ -1,27 +1,23 @@
 const products = [
   {
-    name: "Clay Burst Booster Pack (Sealed) | Korean [SV2D]",
+    name: "Clay Burst Booster Pack (Sealed) | Korean",
     price: 200,
-    image: "sv2d-clay-burst-pack.png",
-    stock: true
+    image: "sv2d-clay-burst-pack.png"
   },
   {
     name: "InfernoX Booster Box (Sealed) | Korean",
     price: 4599,
-    image: "inferno-booster-box.png",
-    stock: true
+    image: "inferno-booster-box.png"
   },
   {
-    name: "Tsareena ex SR 080/066 | Ancient Roar [SV4K]",
+    name: "Tsareena ex SR 080/066 | Ancient Roar",
     price: 400,
-    image: "tsareena-ex-sv4k-080.png",
-    stock: true
+    image: "tsareena-ex-sv4k-080.png"
   },
   {
-    name: "Battle Partners Booster Pack Korean (Sealed)",
+    name: "Battle Partners Booster Pack | Korean",
     price: 250,
-    image: "battle-partners-sv9-korean.png",
-    stock: true
+    image: "battle-partners-sv9-korean.png"
   }
 ];
 
@@ -32,29 +28,19 @@ products.forEach((p, index) => {
   card.className = "card";
 
   card.innerHTML = `
-    <img src="${p.image}" alt="${p.name}">
-    <h2>${p.name}</h2>
+    <img src="${p.image}">
+    <h3>${p.name}</h3>
     <p class="price">₹${p.price}</p>
-
-    ${
-      p.stock
-        ? `
-          <button onclick="addToCart(${index})">Add to Cart</button>
-          <a href="checkout.html?product=${encodeURIComponent(p.name)}&price=${p.price}">
-            <button>Buy Now</button>
-          </a>
-        `
-        : `<button disabled>Out of Stock</button>`
-    }
+    <button onclick="addToCart(${index})">Add to Cart</button>
   `;
 
   container.appendChild(card);
 });
 
-// 🛒 ADD TO CART FUNCTION
 function addToCart(index) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart.push(products[index]);
+  cart.push({ ...products[index], qty: 1 });
   localStorage.setItem("cart", JSON.stringify(cart));
-  alert(products[index].name + " added to cart 🛒");
+  alert("Added to cart ✅");
+  document.getElementById("cartCount").innerText = cart.length;
 }
