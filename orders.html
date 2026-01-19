@@ -1,19 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Orders</title>
+  <meta charset="UTF-8">
+  <title>My Orders</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="site-header">
-  <a href="index.html" class="icon">⬅</a>
-  <span class="logo-text">MY ORDERS</span>
+  <h1 class="logo-text">POKEDORK</h1>
 </header>
 
-<div class="page-box">
-  <p>No orders yet 🚫</p>
-</div>
+<section class="orders-page">
+  <h2>📦 My Orders</h2>
+  <div id="ordersContainer"></div>
+</section>
+
+<script>
+const orders = JSON.parse(localStorage.getItem("orders")) || [];
+const box = document.getElementById("ordersContainer");
+
+if (orders.length === 0) {
+  box.innerHTML = "<p>No orders yet.</p>";
+} else {
+  orders.forEach(o => {
+    box.innerHTML += `
+      <div class="order-card">
+        <p><strong>Order ID:</strong> ${o.orderId}</p>
+        <p><strong>Products:</strong> ${o.products}</p>
+        <p><strong>Amount:</strong> ₹${o.amount}</p>
+        <p><strong>Status:</strong> <span class="status">${o.status}</span></p>
+        <p><small>${o.time}</small></p>
+      </div>
+    `;
+  });
+}
+</script>
 
 </body>
 </html>
