@@ -32,8 +32,11 @@
   </p>
 
   <!-- 🔴 REPLACE PHONE NUMBER -->
-  <a class="whatsapp-btn" href="#" target="_blank">
-  I Have Paid – Send Screenshot
+  <a
+  class="whatsapp-btn"
+  id="whatsappBtn"
+  target="_blank">
+I Have Paid – Send Screenshot
   </a>
 
 </div>
@@ -41,20 +44,29 @@
 <footer>
   <p>© 2026 Pokémon TCG Store</p>
 </footer>
-<script>
+  <script>
   const params = new URLSearchParams(window.location.search);
   const product = params.get("product");
   const price = params.get("price");
 
-  document.getElementById("productName").innerText = product || "Pokémon Item";
-  document.getElementById("productPrice").innerText = price || "0";
-  document.getElementById("payAmount").innerText = price || "0";
+  document.getElementById("productName").innerText =
+    product || "Pokémon Item";
+  document.getElementById("productPrice").innerText =
+    price ? "₹" + price : "₹0";
+  document.getElementById("payAmount").innerText =
+    price || "0";
 
-  const waBtn = document.querySelector(".whatsapp-btn");
-  const msg = `Hello, I have paid ₹${price} for ${product}.`;
+  const waBtn = document.getElementById("whatsappBtn");
+  const msg = `Hello, I have completed the payment.
 
+Product: ${product}
+Amount: ₹${price}
+
+Please find the payment screenshot attached.`;
   waBtn.href =
-    "https://wa.me/919836190283?text=" + encodeURIComponent(msg);
+    "https://wa.me/919836190283?text=" +
+    encodeURIComponent(msg);
+</script>
 </script>
 </body>
 </html>
