@@ -27,7 +27,7 @@ const products = [
 
 const container = document.getElementById("productList");
 
-products.forEach(p => {
+products.forEach((p, index) => {
   const card = document.createElement("div");
   card.className = "card";
 
@@ -36,13 +36,22 @@ products.forEach(p => {
     <h2>${p.name}</h2>
     <p class="price">₹${p.price}</p>
     ${
-      p.stock
-        ? `<a href="checkout.html?product=${encodeURIComponent(p.name)}&price=${p.price}">
-             <button>Buy Now</button>
-           </a>`
-        : `<button disabled>Out of Stock</button>`
+  p.stock
+    ? `
+      <button onclick="addToCart(${index})">Add to Cart</button>
+      <a href="checkout.html?product=${encodeURIComponent(p.name)}&price=${p.price}">
+        <button>Buy Now</button>
+      </a>
+    `
+    : `<button disabled>Out of Stock</button>`
     }
-  `;
 
   container.appendChild(card);
 });
+// 🛒 ADD TO CART FUNCTION
+function addToCart(index) { 
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+cart.push(products[index]);
+localStorage.setItem("cart", JSON.stringify(cart));
+alert(products[index].name + " added to cart 🛒");
+}
