@@ -41,6 +41,6 @@ function addToCart(index) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   cart.push({ ...products[index], qty: 1 });
   localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Added to cart ✅");
+  window.location.href = "cart.html";
   document.getElementById("cartCount").innerText = cart.length;
 }
