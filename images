@@ -3,7 +3,7 @@ epic-website/
 ├── products.js
 ├── checkout.html
 ├── style.css
-├── images/
+├── images
 │   ├── sv2d-clay-burst-pack.png
 │   ├── inferno-booster-box.png
 │   ├── tsareena-ex-sv4k-080.png
