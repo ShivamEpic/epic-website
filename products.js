@@ -11,6 +11,18 @@ const products = [
     image: "images/inferno-booster-box.png",
     stock: true
   }
+  {
+  name: "tsareena ex sr 080/066 (sv4k ancient roar)",
+  price: 400,
+  image: "images/tsareena-ex-sv4k-080.png"",
+  stock: true
+}
+{
+  name: "Battle Partners Booster Pack Korean (Sealed)",
+  price: 250,
+  image: "images/battle-partners-sv9-korean.png",
+  stock: true
+}
 ];
 
 const container = document.getElementById("productList");
