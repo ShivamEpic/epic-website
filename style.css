@@ -9,8 +9,10 @@ body {
 .site-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background: black;
-  padding: 18px;
+  padding: 16px 18px;
+  min-height: 64px;
 }
 .header-icons {
   display: flex;
@@ -18,18 +20,16 @@ body {
   align-items: center;
 }
 .menu-icon {
-  font-size: 36px;       /* BIG */
+  font-size: 36px;
+  margin-right: 12px;
   cursor: pointer;
-  color: white;
-  margin-right: 15px;
-}
-
 }
 .logo-text {
-  font-size: 36px;                 /* centers in header */
+  font-size: 36px;
   font-weight: 900;
   text-align: center;
   flex: 1;
+  margin: 0 auto;
 }
                          
 }
@@ -50,13 +50,12 @@ body {
 .side-menu {
   position: fixed;
   left: -250px;
-  top: 0;
+  top: 64px;   /* SAME AS HEADER HEIGHT */
   width: 220px;
-  height: 100%;
+  height: calc(100% - 64px);
   background: #000;
   transition: 0.3s;
 }
-
 .side-menu a {
   display: block;
   padding: 16px;
