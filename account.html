@@ -2,20 +2,28 @@
 <html>
 <head>
   <title>My Account</title>
-  <link rel="stylesheet" href="style.css">
+  <script src="auth.js"></script>
 </head>
-<body>
 
-<header class="site-header">
-  <a href="index.html" class="icon">⬅</a>
-  <span class="logo-text">MY ACCOUNT</span>
-</header>
+<body style="background:#111;color:white;font-family:Arial;padding:20px">
 
-<div class="page-box">
-  <h2>Welcome Trainer 👋</h2>
-  <p>Email: demo@pokédork.in</p>
-  <p>Status: Active</p>
-</div>
+<h1>My Account</h1>
+<p id="userInfo"></p>
+
+<br>
+<a href="orders.html">📦 View Orders</a>
+<br><br>
+<button onclick="logout()">Logout</button>
+
+<script>
+if (!isLoggedIn()) {
+  window.location.href = "login.html";
+}
+
+const user = getUser();
+document.getElementById("userInfo").innerText =
+  "Logged in as: " + user.email;
+</script>
 
 </body>
 </html>
