@@ -18,7 +18,12 @@ const products = [
     name: "Battle Partners Booster Pack | Korean",
     price: 250,
     image: "battle-partners-sv9-korean.png"
-  }
+  },
+  {
+    name: "Crimson Haze Booster Pack (Sealed) | Korean [sv5a]",
+  price: 250,
+  image: "Crimson_Haze_Korean_Booster.png"
+ }
 ];
 
 const container = document.getElementById("productList");
