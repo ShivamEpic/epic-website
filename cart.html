@@ -24,8 +24,9 @@ const box = document.getElementById("cart");
 
 box.innerHTML = "";
 
-cart.forEach((item, index) => {
-  total += item.price * item.qty;
+cart.forEach(item => {
+  item.qty = item.qty || 1;
+  total += item.price * (item.qty || 1);
   box.innerHTML += `
     <div style="margin-bottom:15px">
       <strong>${item.name}</strong><br>
