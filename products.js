@@ -37,7 +37,15 @@ products.forEach((p, index) => {
 
 function addToCart(index) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart.push({ ...products[index], qty: 1 });
+
+  const existing = cart.find(item => item.name === products[index].name);
+
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({ ...products[index], qty: 1 });
+  }
+
   localStorage.setItem("cart", JSON.stringify(cart));
   alert("Added to cart");
 }
