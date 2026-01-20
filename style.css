@@ -12,11 +12,26 @@ body {
   background: black;
   padding: 18px;
 }
-.logo-text {
+.header-icons {
+  display: flex;
+  margin-left: auto;   /* PUSHES ICONS TO RIGHT */
+  align-items: center;
+}
+.menu-icon {
   font-size: 36px;       /* BIG */
+  cursor: pointer;
+  color: white;
+  margin-right: 15px;
+}
+
+}
+.logo-text {
+  font-size: 36px;                 /* centers in header */
   font-weight: 900;
   text-align: center;
-  flex: 1;               /* centers in header */
+  flex: 1;
+}
+                         
 }
 .logo-text {
   font-size: 26px;
@@ -24,14 +39,12 @@ body {
 }
 
 .icon {
-  .header-icons {
-  display: flex;
-  align-items: center;
-  }
-  font-size: 30px;     /* BIG ICONS */
+  font-size: 34px;      /* BIG */
   color: white;
+  margin-left: 18px;
   text-decoration: none;
-  margin-left: 16px;
+}
+
 }
 /* SIDE MENU */
 .side-menu {
