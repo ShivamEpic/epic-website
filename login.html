@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="background:#111;color:white;font-family:Arial;padding:20px">
+
+<h2>Login</h2>
+
+<input id="email" placeholder="Email"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
+
+<button onclick="login()">Login</button>
+
+<p>No account? <a href="signup.html">Sign up</a></p>
+
+<script>
+function login() {
+  const saved = JSON.parse(localStorage.getItem("user"));
+
+  if (!saved) {
+    alert("No account found");
+    return;
+  }
+
+  if (email.value === saved.email && password.value === saved.password) {
+    window.location.href = "account.html";
+  } else {
+    alert("Wrong credentials");
+  }
+}
+</script>
+
+</body>
+</html>
