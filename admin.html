@@ -1,47 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Admin Panel</title>
-<link rel="stylesheet" href="style.css">
+  <title>Admin – Confirm Payments</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>🛠 Admin Orders Panel</h1>
+<h1 style="text-align:center;">Admin Panel – Payments</h1>
 
-<div id="adminOrders"></div>
+<div id="orders"></div>
 
 <script>
+const ADMIN_PIN = "2509"; // 🔴 CHANGE THIS PIN
+
+let pin = prompt("Enter Admin PIN");
+if (pin !== ADMIN_PIN) {
+  alert("Access Denied");
+  document.body.innerHTML = "";
+  throw new Error("Unauthorized");
+}
+
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
-const adminBox = document.getElementById("adminOrders");
+const box = document.getElementById("orders");
 
-function renderAdmin() {
-  adminBox.innerHTML = "";
-
-  orders.forEach((o, i) => {
-    adminBox.innerHTML += `
-      <div class="order-card">
-        <p><b>${o.orderId}</b></p>
-        <p>${o.products}</p>
-        <p>₹${o.amount}</p>
-        <p>Status: <b>${o.status}</b></p>
-
-        <button onclick="updateStatus(${i}, 'Payment Verified')">Verify</button>
-        <button onclick="updateStatus(${i}, 'Packing')">Pack</button>
-        <button onclick="updateStatus(${i}, 'Shipped')">Ship</button>
-        <button onclick="updateStatus(${i}, 'Cancelled')">Cancel</button>
-      </div>
-    `;
-  });
+if (orders.length === 0) {
+  box.innerHTML = "<p>No orders found</p>";
 }
 
-function updateStatus(index, status) {
-  orders[index].status = status;
+orders.forEach((o, i) => {
+  box.innerHTML += `
+    <div class="order-box">
+      <h3>Order #${i + 1}</h3>
+      <p>Total: ₹${o.total}</p>
+      <p>Status: <b>${o.status}</b></p>
+
+      ${o.status !== "Paid"
+        ? `<button onclick="markPaid(${i})">Mark as Paid</button>`
+        : `<span style="color:lightgreen;">✔ Payment Confirmed</span>`
+      }
+    </div>
+  `;
+});
+
+function markPaid(index) {
+  orders[index].status = "Paid";
   localStorage.setItem("orders", JSON.stringify(orders));
-  renderAdmin();
+  alert("Payment confirmed");
+  location.reload();
 }
-
-renderAdmin();
 </script>
 
 </body>
