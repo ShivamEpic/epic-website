@@ -4,61 +4,63 @@ body {
   background: #111;
   color: white;
 }
-<link rel="stylesheet" href="style.css?v=3">
+
 /* HEADER */
 .site-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: black;
-  padding: 16px 18px;
-  min-height: 64px;
+  padding: 14px 18px;
 }
-.header-icons {
+
+.site-header .left,
+.site-header .center,
+.site-header .right {
   display: flex;
-  margin-left: auto;   /* PUSHES ICONS TO RIGHT */
   align-items: center;
 }
-.menu-icon {
-  font-size: 36px;
-  margin-right: 12px;
-  cursor: pointer;
-}
-.logo-text {
-  font-size: 36px;
-  font-weight: 900;
-  text-align: center;
+
+.site-header .center {
   flex: 1;
-  margin: 0 auto;
+  justify-content: center;
 }
-                         
-}
+
 .logo-text {
-  font-size: 26px;
-  font-weight: bold;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.menu-icon {
+  font-size: 34px;
+  cursor: pointer;
 }
 
 .icon {
-  font-size: 34px;      /* BIG */
-  color: white;
+  font-size: 26px;
   margin-left: 18px;
   text-decoration: none;
+  color: white;
 }
 
-}
 /* SIDE MENU */
 .side-menu {
   position: fixed;
-  left: -250px;
-  top: 64px;   /* SAME AS HEADER HEIGHT */
-  width: 220px;
-  height: calc(100% - 64px);
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100%;
   background: #000;
   transition: 0.3s;
+  z-index: 1000;
 }
+
 .side-menu a {
-  display: block;
-  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  font-size: 20px;
   color: white;
   text-decoration: none;
   border-bottom: 1px solid #333;
@@ -71,19 +73,25 @@ body {
   background: #222;
 }
 
+.hero h1 {
+  font-size: 22px;
+}
+
 .buy-btn {
+  margin-top: 16px;
   padding: 14px 30px;
   font-size: 18px;
   background: red;
   color: white;
   border: none;
-  border-radius: 25px;
+  border-radius: 30px;
 }
 
 /* PRODUCTS */
 .section-title {
   text-align: center;
   margin: 20px;
+  font-size: 22px;
 }
 
 .product-grid {
@@ -99,163 +107,24 @@ body {
   border-radius: 10px;
   text-align: center;
 }
-/* ===== CHECKOUT PAGE BIG TEXT FIX ===== */
 
-.checkout-box {
-  max-width: 520px;
-  margin: auto;
-  padding: 24px;
-}
-
-header h1 {
-  font-size: 36px;
-}
-
-header p {
-  font-size: 18px;
-}
-
-.checkout-box h2 {
-  font-size: 26px;
-  margin-top: 24px;
-}
-
-.checkout-box p {
-  font-size: 20px;
-}
-
-#productName {
-  font-size: 22px;
-  font-weight: bold;
-}
-
-#productPrice,
-#payAmount {
-  font-size: 26px;
-  font-weight: bold;
-  color: #00ff88;
-}
-
-.qr {
-  width: 100%;
-  max-width: 360px;
-  margin: 24px auto;
-  display: block;
-}
-
-.whatsapp-btn {
-  font-size: 20px;
-  padding: 18px;
-  border-radius: 10px;
-}
 .card img {
   width: 100%;
-  border-radius: 8px;
+  height: 160px;
+  object-fit: contain;
 }
 
-.price {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-/* CART */
-.cart-box {
-  padding: 16px;
-}
-
-.cart-item {
-  background: #222;
-  margin-bottom: 10px;
-  padding: 12px;
-  border-radius: 8px;
-}
-
-.checkout-btn {
-  width: 90%;
-  margin: 20px;
-  padding: 16px;
-  background: green;
-  color: white;
-  font-size: 18px;
-  border: none;
-}
-
-/* PAGES */
-.page-box {
-  padding: 20px;
-}
-/* ===== CHECKOUT PAGE BIG TEXT FIX ===== */
-
-/* HEADER */
-header h1 {
-  font-size: 32px; /* BIG Checkout title */
-  margin-bottom: 10px;
-}
-
-header p {
-  font-size: 18px;
-  color: #ccc;
-}
-
-/* SECTION TITLES */
-.checkout-box h2 {
-  font-size: 24px;
-  margin-top: 25px;
-  margin-bottom: 10px;
-}
-
-/* NORMAL TEXT */
-.checkout-box p {
-  font-size: 18px;
-  line-height: 1.6;
-}
-
-/* PRODUCT NAME */
-#productName {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-/* PRICE + PAY AMOUNT */
-#productPrice,
-#payAmount {
-  font-size: 22px;
-  font-weight: bold;
-  color: #00ff88;
-}
-
-/* QR IMAGE */
-.qr {
-  display: block;
-  margin: 20px auto;
-  max-width: 320px;
-}
-
-/* NOTE TEXT */
-.note {
-  font-size: 16px;
-  margin-top: 15px;
-  color: #ddd;
-}
-
-/* WHATSAPP BUTTON */
-.whatsapp-btn {
-  display: block;
-  width: 100%;
-  text-align: center;
-  font-size: 18px;
-  padding: 16px;
-  margin-top: 25px;
-  background: #25d366;
-  color: white;
-  border-radius: 10px;
-  text-decoration: none;
-}
-
-/* FOOTER */
-footer p {
+.card h3 {
   font-size: 14px;
-  color: #aaa;
-  margin-top: 30px;
-  text-align: center;
+}
+
+.card p {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.card button {
+  margin-top: 8px;
+  padding: 8px;
+  width: 100%;
 }
