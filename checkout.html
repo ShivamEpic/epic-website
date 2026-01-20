@@ -43,27 +43,40 @@ document.getElementById("summary").innerText =
 document.getElementById("amount").innerText =
   "Pay Amount: ₹" + total;
 
-// SAVE ORDER
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
-orders.push({
-  products: summary,
-  total: total,
-  status: "Payment Pending"
-});
-localStorage.setItem("orders", JSON.stringify(orders));
+// WhatsApp + Order Save
 function confirmOrder() {
-  alert("Order placed successfully!");
+  if (cart.length === 0) {
+    alert("Cart is empty");
+    return;
+  }
+
+  // Save order
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+  orders.push({
+    products: summary,
+    total: total,
+    status: "Payment Screenshot Sent",
+    time: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("orders", JSON.stringify(orders));
   localStorage.removeItem("cart");
-  window.location.href = "orders.html";
-}
-// WhatsApp
-document.getElementById("whatsappBtn").href =
-  "https://wa.me/919838619283?text=" +
-  encodeURIComponent(
+
+  // WhatsApp redirect
+  const phone = "919838619283"; // YOUR NUMBER
+  const message =
     "Payment Done\n\n" +
     summary +
-    "\nTotal: ₹" + total
+    "\nTotal: ₹" + total;
+
+  window.open(
+    "https://wa.me/" + phone + "?text=" + encodeURIComponent(message),
+    "_blank"
   );
+
+  // Redirect to orders page
+  window.location.href = "orders.html";
+}
 </script>
 
 </body>
