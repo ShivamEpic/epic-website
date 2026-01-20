@@ -18,17 +18,34 @@
 
 <script>
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let total = cart.reduce((s,i)=>s+i.price*i.qty,0);
-let names = cart.map(i=>i.name).join(", ");
+let total = 0;
+let summary = "";
 
-document.getElementById("summary").innerText = names;
+cart.forEach(item => {
+  total += item.price * item.qty;
+  summary += `${item.name} (x${item.qty})\n`;
+});
+
+document.getElementById("summary").innerText = summary;
 document.getElementById("amount").innerText = "Amount: ₹" + total;
 
-localStorage.setItem("orders", JSON.stringify([{products:names, total, status:"Paid"}]));
+// SAVE ORDER
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+orders.push({
+  products: summary,
+  total: total,
+  status: "Payment Pending"
+});
+localStorage.setItem("orders", JSON.stringify(orders));
 
+// WhatsApp
 document.getElementById("waBtn").href =
-"https://wa.me/919838619283?text=" +
-encodeURIComponent("Payment done\nItems: "+names+"\nAmount: ₹"+total);
+  "https://wa.me/919838619283?text=" +
+  encodeURIComponent(
+    "Payment Done\n\n" +
+    summary +
+    "\nTotal: ₹" + total
+  );
 </script>
 
 </body>
