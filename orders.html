@@ -2,34 +2,76 @@
 <html>
 <head>
   <title>My Orders</title>
-  <script src="auth.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background:#111;
+      color:white;
+      font-family:Arial;
+      padding:20px;
+    }
+    .order {
+      border:1px solid #333;
+      padding:15px;
+      margin-bottom:15px;
+      border-radius:8px;
+    }
+    .pending {
+      color:orange;
+    }
+    .paid {
+      color:lightgreen;
+    }
+    button {
+      margin-top:10px;
+      padding:10px 16px;
+      background:#25D366;
+      border:none;
+      border-radius:6px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+  </style>
 </head>
 
-<body style="background:#111;color:white;font-family:Arial;padding:20px">
+<body>
 
 <h1>My Orders</h1>
-<div id="ordersBox"></div>
+
+<div id="ordersList"></div>
 
 <script>
-if (!isLoggedIn()) {
-  window.location.href = "login.html";
-}
-
-const orders = JSON.parse(localStorage.getItem("orders")) || [];
-const box = document.getElementById("ordersBox");
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+let container = document.getElementById("ordersList");
 
 if (orders.length === 0) {
-  box.innerHTML = "<p>No orders yet</p>";
-} else {
-  orders.forEach((o, i) => {
-    box.innerHTML += `
-      <div style="border:1px solid #444;padding:10px;margin:10px 0">
-        <p><b>Order #${i + 1}</b></p>
-        <p>Status: ${o.status}</p>
-        <p>Total: ₹${o.total}</p>
-      </div>
-    `;
-  });
+  container.innerHTML = "<p>No orders yet</p>";
+}
+
+orders.forEach((order, index) => {
+  let div = document.createElement("div");
+  div.className = "order";
+
+  let statusClass = order.status === "Paid" ? "paid" : "pending";
+
+  div.innerHTML = `
+    <h3>Order #${index + 1}</h3>
+    <p>Total: ₹${order.total}</p>
+    <p>Status: <span class="${statusClass}">${order.status}</span></p>
+    ${
+      order.status !== "Paid"
+      ? `<button onclick="confirmOrder(${index})">Mark as Confirmed</button>`
+      : ""
+    }
+  `;
+
+  container.appendChild(div);
+});
+
+function confirmOrder(index) {
+  orders[index].status = "Paid";
+  localStorage.setItem("orders", JSON.stringify(orders));
+  location.reload();
 }
 </script>
 
