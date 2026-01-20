@@ -2,42 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Epic Pokémon Store | Home</title>
+  <title>Epic Pokémon Store</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="site-header">
-  <span class="menu-icon" onclick="toggleMenu()">☰</span>
+  <div class="left">
+    <span class="menu-icon" onclick="toggleMenu()">☰</span>
+  </div>
 
-  <!-- LEFT : MENU (3 DOTS / HAMBURGER) -->
-  <span class="menu-icon">☰</span>
+  <div class="center">
+    <span class="logo-text">Epic Pokémon Store</span>
+  </div>
 
-  <!-- CENTER : STORE NAME -->
-  <div class="logo-text">Epic Pokémon Store</div>
-
-  <!-- RIGHT : SEARCH + CART -->
-  <div class="header-icons">
+  <div class="right">
     <a href="#" class="icon">🔍</a>
     <a href="cart.html" class="icon">🛒</a>
   </div>
-
 </header>
 
-
-<div id="sideMenu" class="side-menu">
+<nav id="sideMenu" class="side-menu">
   <a href="index.html">🏠 Home</a>
-  <a href="account.html">👤 My Account</a>
+  <a href="#">👤 My Account</a>
   <a href="orders.html">📦 Orders</a>
   <a href="cart.html">🛒 Cart</a>
-</div>
+</nav>
 
 <section class="hero">
   <h1>BUY GENUINE POKÉMON CARDS IN INDIA 🇮🇳</h1>
-  <a href="#products" class="buy-btn">Buy Now</a>
+  <button class="buy-btn">Buy Now</button>
 </section>
 
-<h2 id="products" class="section-title">🔥 Featured Products 🔥</h2>
+<h2 class="section-title">🔥 Featured Products 🔥</h2>
 
 <div id="productList" class="product-grid"></div>
 
@@ -46,11 +43,8 @@
 <script>
 function toggleMenu() {
   const menu = document.getElementById("sideMenu");
-  menu.style.left = menu.style.left === "0px" ? "-250px" : "0px";
+  menu.style.left = menu.style.left === "0px" ? "-260px" : "0px";
 }
-
-const cart = JSON.parse(localStorage.getItem("cart")) || [];
-document.getElementById("cartCount").innerText = cart.length;
 </script>
 
 </body>
