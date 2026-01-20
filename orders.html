@@ -1,38 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>My Orders</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+<html>
 <body>
 
-<header class="site-header">
-  <h1 class="logo-text">Epic Pokémon Store</h1>
-</header>
-
-<section class="orders-page">
-  <h2>📦 My Orders</h2>
-  <div id="ordersContainer"></div>
-</section>
+<h1>My Orders</h1>
+<div id="orders"></div>
 
 <script>
-const orders = JSON.parse(localStorage.getItem("orders")) || [];
-const box = document.getElementById("ordersContainer");
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+const box = document.getElementById("orders");
 
 if (orders.length === 0) {
-  box.innerHTML = "<p>No orders yet.</p>";
+  box.innerHTML = "No orders yet";
 } else {
-  orders.forEach(o => {
-    box.innerHTML += `
-      <div class="order-card">
-        <p><strong>Order ID:</strong> ${o.orderId}</p>
-        <p><strong>Products:</strong> ${o.products}</p>
-        <p><strong>Amount:</strong> ₹${o.amount}</p>
-        <p><strong>Status:</strong> <span class="status">${o.status}</span></p>
-        <p><small>${o.time}</small></p>
-      </div>
-    `;
+  orders.forEach(o=>{
+    box.innerHTML += `<p>${o.products} - ₹${o.total} (${o.status})</p>`;
   });
 }
 </script>
