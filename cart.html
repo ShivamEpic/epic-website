@@ -1,48 +1,142 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Your Cart</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: #000;
+    }
+
+    header a {
+      color: white;
+      text-decoration: none;
+      font-size: 20px;
+      margin-right: 10px;
+    }
+
+    h1 {
+      margin: 0 auto;
+      font-size: 22px;
+    }
+
+    .cart-container {
+      padding: 15px;
+    }
+
+    .cart-item {
+      background: #1c1c1c;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+
+    .cart-item p {
+      margin: 6px 0;
+      font-size: 16px;
+    }
+
+    .cart-item button {
+      background: red;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .total {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .checkout-btn {
+      display: inline-block;
+      margin-top: 15px;
+      background: green;
+      color: white;
+      padding: 12px 18px;
+      text-decoration: none;
+      font-size: 18px;
+      border-radius: 6px;
+    }
+
+    .empty {
+      font-size: 18px;
+      opacity: 0.8;
+    }
+  </style>
 </head>
+
 <body>
 
-<header class="site-header">
-  <a href="index.html" class="icon">⬅</a>
-  <span class="logo-text">YOUR CART</span>
+<header>
+  <a href="index.html">←</a>
+  <h1>YOUR CART</h1>
 </header>
 
-<div id="cartItems" class="cart-box"></div>
+<div class="cart-container">
+  <div id="cartItems"></div>
 
-<h2>Total: ₹<span id="total">0</span></h2>
+  <div class="total">
+    Total: <span id="total">₹0</span>
+  </div>
 
-<a href="checkout.html" class="checkout-btn">Proceed to Checkout</a>
+  <a class="checkout-btn" href="checkout.html">
+    Proceed to Checkout
+  </a>
+</div>
 
 <script>
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let total = 0;
-const box = document.getElementById("cart");
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cartItemsDiv = document.getElementById("cartItems");
+  const totalSpan = document.getElementById("total");
 
-box.innerHTML = "";
+  let total = 0;
 
-cart.forEach(item => {
-  item.qty = item.qty || 1;
-  total += item.price * (item.qty || 1);
-  box.innerHTML += `
-    <div style="margin-bottom:15px">
-      <strong>${item.name}</strong><br>
-      ₹${item.price} × ${item.qty}<br>
-      <button onclick="removeItem(${index})">Remove</button>
-    </div>
-  `;
-});
+  if (cart.length === 0) {
+    cartItemsDiv.innerHTML = "<p class='empty'>Your cart is empty.</p>";
+  } else {
+    cart.forEach((item, index) => {
+      const qty = item.qty || 1;
+      const price = Number(item.price);
 
-document.getElementById("total").innerText = "Total: ₹" + total;
+      total += price * qty;
 
-function removeItem(i) {
-  cart.splice(i, 1);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  location.reload();
-}
+      cartItemsDiv.innerHTML += `
+        <div class="cart-item">
+          <p><b>${item.name}</b></p>
+          <p>Price: ₹${price}</p>
+          <p>Quantity: ${qty}</p>
+          <p><b>Subtotal: ₹${price * qty}</b></p>
+          <button onclick="removeItem(${index})">Remove</button>
+        </div>
+      `;
+    });
+  }
+
+  totalSpan.innerText = "₹" + total;
+
+  function removeItem(index) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    location.reload();
+  }
 </script>
+
 </body>
 </html>
