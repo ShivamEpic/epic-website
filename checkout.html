@@ -1,82 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Checkout - Pokémon TCG Store</title>
+  <title>Checkout</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-  <h1>Checkout</h1>
-  <p>Complete your payment to place order</p>
-</header>
+<h1 style="font-size:26px">Checkout</h1>
 
-<div class="checkout-box">
+<p id="summary" style="font-size:18px"></p>
+<p id="amount" style="font-size:22px;font-weight:bold"></p>
 
-  <h2>Order Summary</h2>
-  <p><strong>Product:</strong> <span id="productName"></span></p>
-  <p><strong>Amount:</strong> <span id="productPrice"></span></p>
-  <hr>
+<img src="upi-qr.png" style="width:320px">
 
-  <h2>Pay via UPI</h2>
-  <p>Scan the QR code below and pay <strong>₹<span id="payAmount"></span></strong></p>
-
-  <!-- QR IMAGE -->
-  <img src="upi-qr.png" alt="UPI QR Code" class="qr">
-
-  <p class="note">
-    After successful payment, click the button below and send your
-    <strong>payment screenshot</strong> on WhatsApp.
-  </p>
-
-  <!-- WHATSAPP BUTTON -->
-  <a
-    class="whatsapp-btn"
-    id="whatsappBtn"
-    target="_blank">
-    I Have Paid – Send Screenshot
-  </a>
-
-</div>
-
-<footer>
-  <p>© 2026 Pokémon TCG Store</p>
-</footer>
+<br><br>
+<a id="waBtn" target="_blank">I Have Paid – Send Screenshot</a>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+let names = cart.map(i=>i.name).join(", ");
 
-  let product = params.get("product");
-  let price = params.get("price");
+document.getElementById("summary").innerText = names;
+document.getElementById("amount").innerText = "Amount: ₹" + total;
 
-  // 👉 If coming from CART (no URL params)
-  if (!price) {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+localStorage.setItem("orders", JSON.stringify([{products:names, total, status:"Paid"}]));
 
-    if (cart.length > 0) {
-      product = cart.map(i => i.name).join(", ");
-      price = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
-    }
-  }
-
-  document.getElementById("productName").innerText =
-    product || "Pokémon Item";
-
-  document.getElementById("productPrice").innerText = "₹" + (price || 0);
-  document.getElementById("payAmount").innerText = "₹" + (price || 0);
-
-  // WhatsApp message
-  const waBtn = document.getElementById("whatsappBtn");
-  const msg =
-  `Hello, I have completed the payment.
-
-Product: ${product}
-Amount: ₹${price}
-
-Please find the payment screenshot attached.`;
-  waBtn.href =
-    "https://wa.me/919836190283?text=" + encodeURIComponent(msg);
+document.getElementById("waBtn").href =
+"https://wa.me/919838619283?text=" +
+encodeURIComponent("Payment done\nItems: "+names+"\nAmount: ₹"+total);
 </script>
 
 </body>
