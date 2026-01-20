@@ -26,14 +26,12 @@ const container = document.getElementById("productList");
 products.forEach((p, index) => {
   const card = document.createElement("div");
   card.className = "card";
-
   card.innerHTML = `
     <img src="${p.image}">
     <h3>${p.name}</h3>
-    <p class="price">₹${p.price}</p>
+    <p>₹${p.price}</p>
     <button onclick="addToCart(${index})">Add to Cart</button>
   `;
-
   container.appendChild(card);
 });
 
@@ -41,6 +39,5 @@ function addToCart(index) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   cart.push({ ...products[index], qty: 1 });
   localStorage.setItem("cart", JSON.stringify(cart));
-  window.location.href = "cart.html";
-  document.getElementById("cartCount").innerText = cart.length;
+  alert("Added to cart");
 }
