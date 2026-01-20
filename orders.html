@@ -69,6 +69,18 @@ orders.forEach((order, index) => {
 });
 
 function confirmOrder(index) {
+  const pin = prompt("Enter Admin PIN");
+
+  if (pin !== "2509") {   // ← CHANGE PIN HERE
+    alert("Wrong PIN");
+    return;
+  }
+
+  orders[index].status = "Paid";
+  localStorage.setItem("orders", JSON.stringify(orders));
+  alert("Order confirmed");
+  location.reload();
+}
   orders[index].status = "Paid";
   localStorage.setItem("orders", JSON.stringify(orders));
   location.reload();
