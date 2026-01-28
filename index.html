@@ -1,29 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Epic Pokémon Store</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1 class="title">Epic Pokémon Store</h1>
-<div id="productList" 
-class="products-grid"></div>
+<!-- HEADER -->
+<header class="topbar">
+  <h1>Epic Pokémon Store</h1>
+
+  <div class="actions">
+    <input type="text" id="search" placeholder="Search products..." />
+    <a href="cart.html" class="cart-btn">🛒 Cart</a>
+  </div>
+</header>
+
+<!-- PRODUCTS -->
+<div id="productList" class="grid"></div>
 
 <script src="products.js"></script>
-  <script>
-    products.forEach(p => {
-      document.write(`
-        <div class="card">
-          <img src="${p.image}">
-          <h3>${p.name}</h3>
-          <p>₹${p.price}</p>
-          <a href="product.html?id=${p.id}" class="btn">View Product</a>
-        </div>
-      `);
-    });
-  </script>
-</div>
-
 </body>
 </html>
