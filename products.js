@@ -76,6 +76,14 @@ function addToCart(id) {
   localStorage.setItem("cart", JSON.stringify(cart));
   showToast();
 }
+function showToast() {
+  const toast = document.getElementById("toast");
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 1500);
+}
   <div id="toast">Added to cart</div>
 }
 
