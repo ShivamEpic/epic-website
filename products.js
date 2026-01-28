@@ -64,12 +64,18 @@ function openProduct(id) {
 function addToCart(id) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   const product = products.find(p => p.id === id);
-  const existing = cart.find(i => i.id === id);
 
-  if (existing) existing.qty += 1;
-  else cart.push({ ...product, qty: 1 });
+  const existing = cart.find(item => item.id === id);
+
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
 
   localStorage.setItem("cart", JSON.stringify(cart));
+  showToast();
+}
   <div id="toast">Added to cart</div>
 }
 
