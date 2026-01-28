@@ -1,115 +1,95 @@
 body {
+  margin: 0;
+  font-family: Arial, sans-serif;
   background: #111;
-  color: white;
-  font-family: Arial;
-  text-align: center;
+  color: #fff;
 }
 
-.title {
-  margin: 20px;
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: #000;
+  position: sticky;
+  top: 0;
 }
 
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.actions input {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+}
+
+.cart-btn {
+  background: #25d366;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+/* GRID LAYOUT */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
   padding: 20px;
 }
 
-.card {
-  background: #1e1e1e;
-  padding: 15px;
-  border-radius: 10px;
-}
-
-img {
-  width: 100%;
-  border-radius: 8px;
-}
-
-input {
-  padding: 8px;
-  width: 80%;
-  margin-top: 10px;
-}
-
-button, .btn {
-  background: #25D366;
-  color: black;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  display: inline-block;
-  margin-top: 10px;
-  cursor: pointer;
-  text-decoration: none;
-}
-/* =========================
-   PRODUCTS GRID
-========================= */
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 16px;
-  padding: 16px;
-}
-
-/* =========================
-   PRODUCT CARD
-========================= */
+/* PRODUCT CARD */
 .card {
   background: #1c1c1c;
-  border-radius: 10px;
-  padding: 12px;
+  border-radius: 12px;
+  padding: 15px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
 .card img {
   width: 100%;
   max-height: 180px;
   object-fit: contain;
-  border-radius: 6px;
   cursor: pointer;
 }
 
-.card h2 {
+.card h3 {
   font-size: 14px;
-  margin: 8px 0;
-  color: #fff;
+  margin: 10px 0;
   cursor: pointer;
 }
 
-.card .price {
-  font-size: 16px;
+.price {
+  color: #25d366;
   font-weight: bold;
-  color: #00ffcc;
-  margin-bottom: 8px;
 }
 
-/* =========================
-   BUTTONS
-========================= */
-.card .btns {
+/* BUTTONS */
+.btns {
   display: flex;
+  justify-content: space-between;
   gap: 8px;
+  margin-top: 10px;
 }
 
-.card button {
+.btns button {
   flex: 1;
   padding: 8px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 13px;
+  font-weight: bold;
 }
 
-.card button:first-child {
-  background: #ff9800;
-  color: #000;
+.btns .cart {
+  background: orange;
 }
 
-.card button.buy {
-  background: #00c853;
-  color: #000;
+.btns .buy {
+  background: #25d366;
 }
