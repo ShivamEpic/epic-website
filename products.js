@@ -1,3 +1,6 @@
+// =======================
+// PRODUCTS DATA
+// =======================
 const products = [
   {
     id: 1,
@@ -18,14 +21,14 @@ const products = [
     name: "Tsareena ex SR 080/066 | Ancient Roar",
     price: 400,
     image: "tsareena-ex-sv4k-080.png",
-    description: "Rare Tsareena ex SR card from Ancient Roar."
+    description: "Rare Tsareena ex SR card from Ancient Roar set."
   },
   {
     id: 4,
     name: "Battle Partners Booster Pack | Korean",
     price: 250,
     image: "battle-partners-sv9-korean.png",
-    description: "Battle Partners Korean booster pack."
+    description: "Korean Battle Partners booster pack."
   },
   {
     id: 5,
@@ -36,31 +39,42 @@ const products = [
   }
 ];
 
+// =======================
+// RENDER PRODUCTS
+// =======================
 const container = document.getElementById("productList");
 
-products.forEach(p => {
-  const card = document.createElement("div");
-  card.className = "card";
+if (container) {
+  products.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "card";
 
-  card.innerHTML = `
-    <img src="${p.image}" onclick="openProduct(${p.id})">
-    <h3 onclick="openProduct(${p.id})">${p.name}</h3>
-    <p class="price">₹${p.price}</p>
+    card.innerHTML = `
+      <img src="${p.image}" alt="${p.name}" onclick="openProduct(${p.id})">
+      <h3 onclick="openProduct(${p.id})">${p.name}</h3>
+      <p class="price">₹${p.price}</p>
 
-    <div class="btns">
-      <button class="cart" onclick="addToCart(${p.id})">Add to Cart</button>
-      <button class="buy" onclick="buyNow(${p.id})">Buy Now</button>
-    </div>
-  `;
+      <div class="btns">
+        <button class="cart" onclick="addToCart(${p.id})">Add to Cart</button>
+        <button class="buy" onclick="buyNow(${p.id})">Buy Now</button>
+      </div>
+    `;
 
-  container.appendChild(card);
-});
+    container.appendChild(card);
+  });
+}
 
+// =======================
+// OPEN PRODUCT PAGE
+// =======================
 function openProduct(id) {
   localStorage.setItem("selectedProduct", id);
   window.location.href = "product.html";
 }
 
+// =======================
+// ADD TO CART
+// =======================
 function addToCart(id) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   const product = products.find(p => p.id === id);
@@ -76,19 +90,26 @@ function addToCart(id) {
   localStorage.setItem("cart", JSON.stringify(cart));
   showToast();
 }
+
+// =======================
+// BUY NOW
+// =======================
+function buyNow(id) {
+  const product = products.find(p => p.id === id);
+  localStorage.setItem("cart", JSON.stringify([{ ...product, qty: 1 }]));
+  window.location.href = "checkout.html";
+}
+
+// =======================
+// TOAST (NO ALERT POPUP)
+// =======================
 function showToast() {
   const toast = document.getElementById("toast");
+  if (!toast) return;
+
   toast.classList.add("show");
 
   setTimeout(() => {
     toast.classList.remove("show");
   }, 1500);
-}
-  <div id="toast">Added to cart</div>
-}
-
-function buyNow(id) {
-  const product = products.find(p => p.id === id);
-  localStorage.setItem("cart", JSON.stringify([{ ...product, qty: 1 }]));
-  window.location.href = "checkout.html";
 }
