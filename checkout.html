@@ -6,75 +6,30 @@
 </head>
 <body>
 
-<h1 style="font-size:36px;text-align:center;">Checkout</h1>
+<h1>Checkout</h1>
 
-<p id="summary" style="font-size:20px;line-height:1.6;"></p>
-<p id="amount" style="font-size:28px;font-weight:bold;margin-top:10px;"></p>
-<img src="upi-qr.png" style="width:260px;display:block;margin:20px auto;">
+<img src="upi-qr.png" width="250">
+
 <br><br>
-<a id="waBtn" target="_blank"
-   <button onclick="confirmOrder()"
-style="
-padding:14px 24px;
-background:#25D366;
-color:black;
-font-size:18px;
-font-weight:bold;
-border:none;
-border-radius:8px;
-">
-I Have Paid – Send Screenshot
-</button>
-</a>
+<button onclick="confirmOrder()">I Have Paid</button>
+
 <script>
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-let total = 0;
-let summary = "";
-
-cart.forEach(item => {
-  total += item.price * item.qty;
-  summary += `• ${item.name} (x${item.qty})\n`;
-});
-
-document.getElementById("summary").innerText =
-  summary || "No items in cart";
-
-document.getElementById("amount").innerText =
-  "Pay Amount: ₹" + total;
-
-// WhatsApp + Order Save
 function confirmOrder() {
-  if (cart.length === 0) {
-    alert("Cart is empty");
-    return;
-  }
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const total = cart.reduce((s,i)=>s+i.finalPrice,0);
 
-  // Save order
   let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
   orders.push({
-    products: summary,
+    items: cart,
     total: total,
-    status: "Payment Screenshot Sent",
-    time: new Date().toLocaleString()
+    status: "Payment Pending"
   });
 
   localStorage.setItem("orders", JSON.stringify(orders));
   localStorage.removeItem("cart");
 
-  // WhatsApp redirect
-  const phone = "919836190283"; // YOUR NUMBER
-  const message =
-    "Payment Done\n\n" +
-    summary +
-    "\nTotal: ₹" + total;
-
-  window.open(
-    "https://wa.me/" + phone + "?text=" + encodeURIComponent(message),
-    "_blank"
-  );
-
-  // Redirect to orders page
+  alert("Order placed!");
   window.location.href = "orders.html";
 }
 </script>
