@@ -6,26 +6,16 @@
 </head>
 <body>
 
-<div id="product" style="padding:20px;text-align:center;"></div>
+<div class="product-page">
+  <img id="img">
+  <h2 id="name"></h2>
+  <p id="desc"></p>
+  <h3 id="price"></h3>
 
-<script>
-const products = JSON.parse(localStorage.getItem("cart")) || [];
-const id = localStorage.getItem("selectedProduct");
+  <button onclick="addToCart()">Add to Cart</button>
+  <button onclick="buyNow()">Buy Now</button>
+</div>
 
-fetch("products.js"); // just to keep GitHub Pages happy
-
-const allProducts = JSON.parse(localStorage.getItem("allProducts")) || [];
-
-const product = allProducts.find(p => p.id == id);
-
-document.getElementById("product").innerHTML = `
-  <img src="${product.image}" style="max-width:250px">
-  <h2>${product.name}</h2>
-  <p>${product.description}</p>
-  <h3>₹${product.price}</h3>
-  <button onclick="buyNow(${product.id})">Buy Now</button>
-`;
-</script>
-
+<script src="products.js"></script>
 </body>
 </html>
