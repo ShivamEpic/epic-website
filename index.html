@@ -1,23 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>Epic Pokémon Store</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="topbar">
-  <h1>Epic Pokémon Store</h1>
+<header class="nav">
+  <h2>Epic Pokémon Store</h2>
 
-  <div class="actions">
-    <input type="text" id="search" placeholder="Search products..." />
-    <a href="cart.html" class="cart-btn">🛒 Cart</a>
+  <input id="search" placeholder="Search products...">
+
+  <button onclick="location.href='cart.html'" class="cart-btn">
+    Cart (<span id="cartCount">0</span>)
+  </button>
+
+  <button id="menuBtn">⋮</button>
+  <div id="menu" class="menu">
+    <a href="cart.html">Cart</a>
+    <a href="#">Orders</a>
   </div>
 </header>
 
-<!-- PRODUCTS -->
 <div id="productList" class="grid"></div>
 
 <script src="products.js"></script>
