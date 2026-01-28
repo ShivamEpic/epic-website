@@ -1,55 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>Epic Pokémon Store</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header class="site-header">
-  <div class="left">
-    <span class="menu-icon" onclick="toggleMenu()">☰</span>
-  </div>
+<h1 class="title">Epic Pokémon Store</h1>
 
-  <div class="center">
-    <span class="logo-text">Epic Pokémon Store</span>
-  </div>
-
-  <div class="right">
-    <a href="index.html" class="icon">🔍</a>
-
-<a href="cart.html" class="icon">🛒</a>
-  </div>
-</header>
-
-<nav id="sideMenu" class="side-menu">
-  <a href="index.html">🏠 Home</a>
-
-<a href="account.html">👤 My Account</a>
-
-<a href="orders.html">📦 Orders</a>
-
-<a href="cart.html">🛒 Cart</a>
-</nav>
-
-<section class="hero">
-  <h1>BUY GENUINE POKÉMON CARDS IN INDIA 🇮🇳</h1>
-  <button class="buy-btn">Buy Now</button>
-</section>
-
-<h2 class="section-title">🔥 Featured Products 🔥</h2>
-
-<div id="productList" class="product-grid"></div>
-
-<script src="products.js"></script>
-
-<script>
-function toggleMenu() {
-  const menu = document.getElementById("sideMenu");
-  menu.style.left = menu.style.left === "0px" ? "-260px" : "0px";
-}
-</script>
+<div class="grid">
+  <script src="products.js"></script>
+  <script>
+    products.forEach(p => {
+      document.write(`
+        <div class="card">
+          <img src="${p.image}">
+          <h3>${p.name}</h3>
+          <p>₹${p.price}</p>
+          <a href="product.html?id=${p.id}" class="btn">View Product</a>
+        </div>
+      `);
+    });
+  </script>
+</div>
 
 </body>
 </html>
