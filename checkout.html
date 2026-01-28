@@ -1,35 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Checkout</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Checkout</h1>
+<h1 style="text-align:center;">Checkout</h1>
 
-<img src="upi-qr.png" width="250">
+<div class="checkout-box">
 
-<br><br>
-<button onclick="confirmOrder()">I Have Paid</button>
+  <div id="summary"></div>
+  <h2 id="amount"></h2>
+
+  <img src="upi-qr.png" class="qr">
+
+  <button onclick="confirmPaid()" class="paid-btn">
+    I Have Paid – Send Screenshot
+  </button>
+
+</div>
 
 <script>
-function confirmOrder() {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const total = cart.reduce((s,i)=>s+i.finalPrice,0);
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+let summaryText = "";
+let total = 0;
 
-  orders.push({
-    items: cart,
-    total: total,
-    status: "Payment Pending"
-  });
+cart.forEach(item => {
+  summaryText += `${item.name} (x${item.qty})\n`;
+  total += item.price * item.qty;
+});
 
-  localStorage.setItem("orders", JSON.stringify(orders));
+document.getElementById("summary").innerText =
+  summaryText || "No items in cart";
+
+document.getElementById("amount").innerText =
+  "Pay Amount: ₹" + total;
+
+// SAVE ORDER
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+orders.push({
+  items: summaryText,
+  total: total,
+  status: "Payment Pending"
+});
+localStorage.setItem("orders", JSON.stringify(orders));
+
+function confirmPaid() {
+  alert("Payment marked as sent. We will verify.");
   localStorage.removeItem("cart");
-
-  alert("Order placed!");
   window.location.href = "orders.html";
 }
 </script>
