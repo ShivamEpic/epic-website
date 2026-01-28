@@ -69,7 +69,15 @@ function openProduct(id) {
   localStorage.setItem("selectedProduct", id);
   window.location.href = "product.html";
 }
+function buyNow(id) {
+  let cart = [];
+  const product = products.find(p => p.id === id);
 
+  cart.push({ ...product, qty: 1 });
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  window.location.href = "checkout.html";
+}
 // ===============================
 // ADD TO CART
 // ===============================
@@ -77,6 +85,17 @@ function addToCart(id) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   const product = products.find(p => p.id === id);
 
+  const existing = cart.find(item => item.id === id);
+
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert("Added to cart");
+}
   const existing = cart.find(item => item.id === id);
 
   if (existing) {
