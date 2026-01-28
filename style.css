@@ -44,3 +44,72 @@ button, .btn {
   cursor: pointer;
   text-decoration: none;
 }
+/* =========================
+   PRODUCTS GRID
+========================= */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+/* =========================
+   PRODUCT CARD
+========================= */
+.card {
+  background: #1c1c1c;
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.card img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.card h2 {
+  font-size: 14px;
+  margin: 8px 0;
+  color: #fff;
+  cursor: pointer;
+}
+
+.card .price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #00ffcc;
+  margin-bottom: 8px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.card .btns {
+  display: flex;
+  gap: 8px;
+}
+
+.card button {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.card button:first-child {
+  background: #ff9800;
+  color: #000;
+}
+
+.card button.buy {
+  background: #00c853;
+  color: #000;
+}
