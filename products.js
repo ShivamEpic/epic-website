@@ -70,7 +70,7 @@ function addToCart(id) {
   else cart.push({ ...product, qty: 1 });
 
   localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Added to cart");
+  <div id="toast">Added to cart</div>
 }
 
 function buyNow(id) {
