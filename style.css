@@ -93,3 +93,34 @@ body {
 .btns .buy {
   background: #25d366;
 }
+.checkout-box {
+  max-width: 400px;
+  margin: 30px auto;
+  background: #1c1c1c;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+#summary {
+  white-space: pre-line;
+  margin-bottom: 10px;
+}
+
+.qr {
+  width: 220px;
+  margin: 20px auto;
+  display: block;
+}
+
+.paid-btn {
+  background: #25d366;
+  color: black;
+  border: none;
+  padding: 14px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
