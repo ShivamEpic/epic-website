@@ -2,89 +2,35 @@
 <html>
 <head>
   <title>My Orders</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body {
-      background:#111;
-      color:white;
-      font-family:Arial;
-      padding:20px;
-    }
-    .order {
-      border:1px solid #333;
-      padding:15px;
-      margin-bottom:15px;
-      border-radius:8px;
-    }
-    .pending {
-      color:orange;
-    }
-    .paid {
-      color:lightgreen;
-    }
-    button {
-      margin-top:10px;
-      padding:10px 16px;
-      background:#25D366;
-      border:none;
-      border-radius:6px;
-      font-weight:bold;
-      cursor:pointer;
-    }
+    body { background:#111; color:#fff; font-family:Arial; padding:20px }
+    .order { background:#1c1c1c; padding:15px; border-radius:8px; margin-bottom:10px }
   </style>
 </head>
-
 <body>
 
-<h1>My Orders</h1>
-
-<div id="ordersList"></div>
+<h2>My Orders</h2>
+<div id="orders"></div>
 
 <script>
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
-let container = document.getElementById("ordersList");
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const box = document.getElementById("orders");
 
-if (orders.length === 0) {
-  container.innerHTML = "<p>No orders yet</p>";
-}
-
-orders.forEach((order, index) => {
-  let div = document.createElement("div");
-  div.className = "order";
-
-  let statusClass = order.status === "Paid" ? "paid" : "pending";
-
-  div.innerHTML = `
-    <h3>Order #${index + 1}</h3>
-    <p>Total: ₹${order.total}</p>
-    <p>Status: <span class="${statusClass}">${order.status}</span></p>
-    ${
-      order.status !== "Paid"
-      ? `<button onclick="confirmOrder(${index})">Mark as Confirmed</button>`
-      : ""
-    }
-  `;
-
-  container.appendChild(div);
-});
-
-function confirmOrder(index) {
-  const pin = prompt("Enter Admin PIN");
-
-  if (pin !== "2509") {   // ← CHANGE PIN HERE
-    alert("Wrong PIN");
-    return;
+  if (orders.length === 0) {
+    box.innerHTML = "<p>No orders yet</p>";
+  } else {
+    orders.reverse().forEach(o => {
+      box.innerHTML += `
+        <div class="order">
+          <strong>${o.id}</strong><br>
+          ${o.date}<br><br>
+          ${o.items.map(i => `${i.name} x${i.qty}`).join("<br>")}
+          <br><br><b>${o.total}</b>
+        </div>
+      `;
+    });
   }
-
-  orders[index].status = "Paid";
-  localStorage.setItem("orders", JSON.stringify(orders));
-  alert("Order confirmed");
-  location.reload();
-}
-  orders[index].status = "Paid";
-  localStorage.setItem("orders", JSON.stringify(orders));
-  location.reload();
-}
 </script>
 
 </body>
