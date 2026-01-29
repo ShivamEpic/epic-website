@@ -3,75 +3,194 @@
 <head>
   <meta charset="UTF-8">
   <title>Checkout</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .info {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-bottom: 15px;
+    }
+
+    .item {
+      background: #1c1c1c;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .qty-btn {
+      padding: 4px 10px;
+      margin: 0 5px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .plus { background: #2ecc71; }
+    .minus { background: #e74c3c; }
+
+    .coupon {
+      margin-top: 20px;
+    }
+
+    input {
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      width: 220px;
+    }
+
+    button {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      background: #f1c40f;
+      margin-left: 5px;
+    }
+
+    .total {
+      font-size: 20px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .pay {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      font-size: 18px;
+      background: #2ecc71;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+    }
+  </style>
 </head>
 <body>
 
-<h1 style="text-align:center;">Checkout</h1>
+<h1>Checkout</h1>
 
-<div class="checkout-box">
-
-  <div id="summary"></div>
-  <h2 id="amount"></h2>
-
-  <img src="upi-qr.png" class="qr">
-
-  <button onclick="confirmPaid()" class="paid-btn">
-    I Have Paid – Send Screenshot
-  </button>
-<input
-  type="text"
-  id="coupon"
-  placeholder="Enter coupon code"
-/>
-
-<button onclick="applyCoupon()">Apply</button>
-
-<p id="discountMsg"></p>
+<div class="info">
+  Coupons Available:<br>
+  • <b>POKEMON10</b> – 10% off on ₹600+<br>
+  • <b>WELCOME50</b> – ₹50 off on first order (₹300+)<br>
+  • <b>EPIC50</b> – ₹50 off on ₹500+
 </div>
 
+<div id="items"></div>
+
+<div class="coupon">
+  <input type="text" id="coupon" placeholder="Enter coupon code">
+  <button onclick="applyCoupon()">Apply</button>
+</div>
+
+<div class="total" id="total">Total: ₹0</div>
+
+<button class="pay" onclick="placeOrder()">Place Order</button>
+
 <script>
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let discount = 0;
 
-let summaryText = "";
-let total = 0;
+  function renderCart() {
+    const box = document.getElementById("items");
+    box.innerHTML = "";
 
-cart.forEach(item => {
-  summaryText += `${item.name} (x${item.qty})\n`;
-  total += item.price * item.qty;
-});
+    let total = 0;
 
-document.getElementById("summary").innerText =
-  summaryText || "No items in cart";
+    cart.forEach((item, index) => {
+      total += item.price * item.qty;
 
-document.getElementById("amount").innerText =
-  "Pay Amount: ₹" + total;
+      box.innerHTML += `
+        <div class="item">
+          <strong>${item.name}</strong><br>
+          ₹${item.price} × ${item.qty}<br><br>
+          <button class="qty-btn minus" onclick="changeQty(${index}, -1)">−</button>
+          <button class="qty-btn plus" onclick="changeQty(${index}, 1)">+</button>
+        </div>
+      `;
+    });
 
-// SAVE ORDER
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
-orders.push({
-  items: summaryText,
-  total: total,
-  status: "Payment Pending"
-});
-localStorage.setItem("orders", JSON.stringify(orders));
+    total = total - discount;
+    if (total < 0) total = 0;
 
-function confirmPaid() {
-  alert("Payment marked as sent. We will verify.");
-  localStorage.removeItem("cart");
-  window.location.href = "orders.html";
-}
-  function applyCoupon() {
-  const code = document.getElementById("coupon").value.trim();
-  const msg = document.getElementById("discountMsg");
-
-  if (code === "POKE10") {
-    msg.innerText = "Coupon applied! 10% off";
-    msg.style.color = "green";
-  } else {
-    msg.innerText = "Invalid coupon";
-    msg.style.color = "red";
+    document.getElementById("total").innerText = "Total: ₹" + total;
   }
+
+  function changeQty(index, change) {
+    cart[index].qty += change;
+    if (cart[index].qty <= 0) cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    discount = 0; // reset coupon if cart changes
+    renderCart();
+  }
+
+  function applyCoupon() {
+    const code = document.getElementById("coupon").value.toUpperCase();
+    const cartTotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const firstOrderUsed = localStorage.getItem("firstOrderCompleted");
+
+    discount = 0;
+
+    if (code === "POKEMON10") {
+      if (cartTotal >= 600) {
+        discount = Math.floor(cartTotal * 0.10);
+        alert("POKEMON10 applied: 10% off");
+      } else {
+        alert("Minimum purchase ₹600 required for POKEMON10");
+      }
+
+    } else if (code === "WELCOME50") {
+      if (firstOrderUsed) {
+        alert("WELCOME50 is only valid on your first order");
+      } else if (cartTotal >= 300) {
+        discount = 50;
+        alert("WELCOME50 applied: ₹50 off (First Order)");
+      } else {
+        alert("Minimum purchase ₹300 required for WELCOME50");
+      }
+
+    } else if (code === "EPIC50") {
+      if (cartTotal >= 500) {
+        discount = 50;
+        alert("EPIC50 applied: ₹50 off");
+      } else {
+        alert("Minimum purchase ₹500 required for EPIC50");
+      }
+
+    } else {
+      alert("Invalid coupon code");
+    }
+
+    renderCart();
+  }
+
+  function placeOrder() {
+    // lock first-order coupon
+    localStorage.setItem("firstOrderCompleted", "true");
+
+    alert("Order placed successfully!");
+    localStorage.removeItem("cart");
+    window.location.href = "index.html";
+  }
+
+  renderCart();
 </script>
 
 </body>
