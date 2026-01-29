@@ -71,7 +71,9 @@ function openProduct(id) {
   localStorage.setItem("selectedProduct", id);
   window.location.href = "product.html";
 }
-
+function openCart() {
+  window.location.href = "cart.html";
+}
 // =======================
 // ADD TO CART
 // =======================
