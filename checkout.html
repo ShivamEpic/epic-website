@@ -106,12 +106,12 @@
 
 <script>
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
   let discount = 0;
 
   function renderCart() {
     const box = document.getElementById("items");
     box.innerHTML = "";
-
     let total = 0;
 
     cart.forEach((item, index) => {
@@ -127,9 +127,8 @@
       `;
     });
 
-    total = total - discount;
+    total -= discount;
     if (total < 0) total = 0;
-
     document.getElementById("total").innerText = "Total: ₹" + total;
   }
 
@@ -137,61 +136,53 @@
     cart[index].qty += change;
     if (cart[index].qty <= 0) cart.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(cart));
-    discount = 0; // reset coupon if cart changes
+    discount = 0;
     renderCart();
   }
 
   function applyCoupon() {
     const code = document.getElementById("coupon").value.toUpperCase();
-    const cartTotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-    const firstOrderUsed = localStorage.getItem("firstOrderCompleted");
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const firstUsed = localStorage.getItem("firstOrderCompleted");
 
     discount = 0;
 
-    if (code === "POKEMON10") {
-      if (cartTotal >= 600) {
-        discount = Math.floor(cartTotal * 0.10);
-        alert("POKEMON10 applied: 10% off");
-      } else {
-        alert("Minimum purchase ₹600 required for POKEMON10");
-      }
-
-    } else if (code === "WELCOME50") {
-      if (firstOrderUsed) {
-        alert("WELCOME50 is only valid on your first order");
-      } else if (cartTotal >= 300) {
-        discount = 50;
-        alert("WELCOME50 applied: ₹50 off (First Order)");
-      } else {
-        alert("Minimum purchase ₹300 required for WELCOME50");
-      }
-
-    } else if (code === "EPIC50") {
-      if (cartTotal >= 500) {
-        discount = 50;
-        alert("EPIC50 applied: ₹50 off");
-      } else {
-        alert("Minimum purchase ₹500 required for EPIC50");
-      }
-
-    } else {
-      alert("Invalid coupon code");
-    }
+    if (code === "POKEMON10" && total >= 600) discount = Math.floor(total * 0.10);
+    else if (code === "EPIC50" && total >= 500) discount = 50;
+    else if (code === "WELCOME50" && !firstUsed && total >= 300) discount = 50;
+    else alert("Coupon not valid");
 
     renderCart();
   }
 
   function placeOrder() {
-    // lock first-order coupon
+    if (cart.length === 0) {
+      alert("Cart is empty");
+      return;
+    }
+
+    const order = {
+      id: "ORD" + Date.now(),
+      items: cart,
+      total: document.getElementById("total").innerText,
+      date: new Date().toLocaleString()
+    };
+
+    orders.push(order);
+    localStorage.setItem("orders", JSON.stringify(orders));
     localStorage.setItem("firstOrderCompleted", "true");
 
-    alert("Order placed successfully!");
+    // WhatsApp payment
+    const msg = encodeURIComponent(
+      `New Order ${order.id}\n${order.items.map(i => `${i.name} x${i.qty}`).join("\n")}\n${order.total}`
+    );
+
     localStorage.removeItem("cart");
-    window.location.href = "index.html";
+    window.location.href = `https://wa.me/916219582428?text=${msg}`;
   }
 
   renderCart();
-</script>
+      </script>
 
 </body>
 </html>
