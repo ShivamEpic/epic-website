@@ -7,7 +7,13 @@
 <body>
 
 <header class="top-bar">
-
+<div class="menu">
+  <button class="menu-btn">⋮</button>
+  <div class="menu-content">
+    <a href="orders.html">Orders</a>
+    <a href="account.html">My Account</a>
+  </div>
+</div>
   <!-- LEFT EMPTY (for balance) -->
   <div class="left"></div>
 
@@ -24,19 +30,9 @@
       onkeyup="searchProducts()"
     />
 
-    <button id="cartBtn" class="cart-btn">
-      Cart (0)
-    </button>
+    <button id="cartBtn" class="cart-btn" onclick="openCart()">Cart (0)</button>
 
-    <div class="menu">
-      <button class="menu-btn">⋮</button>
-      <div class="menu-content">
-        <a href="orders.html">Orders</a>
-        <a href="account.html">My Account</a>
-      </div>
-    </div>
-  </div>
-
+    
 </header>
 <div id="productList" class="grid"></div>
 
