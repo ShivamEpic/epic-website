@@ -19,7 +19,15 @@
   <button onclick="confirmPaid()" class="paid-btn">
     I Have Paid – Send Screenshot
   </button>
+<input
+  type="text"
+  id="coupon"
+  placeholder="Enter coupon code"
+/>
 
+<button onclick="applyCoupon()">Apply</button>
+
+<p id="discountMsg"></p>
 </div>
 
 <script>
@@ -53,6 +61,17 @@ function confirmPaid() {
   localStorage.removeItem("cart");
   window.location.href = "orders.html";
 }
+  function applyCoupon() {
+  const code = document.getElementById("coupon").value.trim();
+  const msg = document.getElementById("discountMsg");
+
+  if (code === "POKE10") {
+    msg.innerText = "Coupon applied! 10% off";
+    msg.style.color = "green";
+  } else {
+    msg.innerText = "Invalid coupon";
+    msg.style.color = "red";
+  }
 </script>
 
 </body>
