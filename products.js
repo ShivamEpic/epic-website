@@ -63,7 +63,24 @@ if (container) {
     container.appendChild(card);
   });
 }
+const selectedId = localStorage.getItem("selectedProduct");
 
+if (selectedId && document.getElementById("productName")) {
+  const product = products.find(p => p.id == selectedId);
+
+  document.getElementById("productImage").src = product.image;
+  document.getElementById("productName").innerText = product.name;
+  document.getElementById("productDesc").innerText = product.description;
+  document.getElementById("productPrice").innerText = "₹" + product.price;
+}
+
+function addToCartFromProduct() {
+  addToCart(Number(selectedId));
+}
+
+function buyNowFromProduct() {
+  buyNow(Number(selectedId));
+}
 // =======================
 // OPEN PRODUCT PAGE
 // =======================
