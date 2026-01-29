@@ -17,7 +17,11 @@ body {
 .left {
   width: 60px;
 }
-
+.left {
+  width: 60px;
+  display: flex;
+  align-items: center;
+}
 /* Store name */
 .store-name {
   color: #fff;
