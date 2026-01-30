@@ -1,96 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Checkout</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>Checkout</title>
 
-  <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
+<style>
+body{
+  background:#0f0f0f;
+  color:#fff;
+  font-family:Arial, sans-serif;
+  padding:20px;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
+h1{
+  text-align:center;
+}
 
-    .info {
-      font-size: 14px;
-      opacity: 0.85;
-      margin-bottom: 15px;
-    }
+.info{
+  opacity:0.85;
+  margin-bottom:15px;
+}
 
-    .item {
-      background: #1c1c1c;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
+.item{
+  background:#1c1c1c;
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:10px;
+}
 
-    .qty-btn {
-      padding: 4px 10px;
-      margin: 0 5px;
-      cursor: pointer;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
-    }
+.qty-btn{
+  padding:4px 10px;
+  border:none;
+  border-radius:4px;
+  cursor:pointer;
+  font-size:16px;
+}
 
-    .plus { background: #2ecc71; }
-    .minus { background: #e74c3c; }
+.plus{background:#22c55e;}
+.minus{background:#ef4444;}
 
-    .coupon {
-      margin-top: 20px;
-    }
+.coupon{
+  margin-top:20px;
+}
 
-    input {
-      padding: 8px;
-      border-radius: 6px;
-      border: none;
-      width: 220px;
-    }
+input{
+  padding:8px;
+  border-radius:6px;
+  border:none;
+  width:200px;
+}
 
-    button {
-      padding: 8px 12px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      background: #f1c40f;
-      margin-left: 5px;
-    }
+button{
+  padding:8px 12px;
+  border-radius:6px;
+  border:none;
+  cursor:pointer;
+  background:#facc15;
+  margin-left:5px;
+}
 
-    .total {
-      font-size: 20px;
-      margin-top: 20px;
-      font-weight: bold;
-    }
+.total{
+  font-size:20px;
+  margin-top:20px;
+  font-weight:bold;
+}
 
-    .pay {
-      margin-top: 20px;
-      width: 100%;
-      padding: 14px;
-      font-size: 18px;
-      background: #2ecc71;
-      border-radius: 8px;
-      cursor: pointer;
-      border: none;
-    }
-  </style>
+.pay{
+  width:100%;
+  padding:14px;
+  margin-top:20px;
+  font-size:18px;
+  background:#22c55e;
+}
+</style>
 </head>
+
 <body>
 
 <h1>Checkout</h1>
 
 <div class="info">
-  Coupons Available:<br>
-  • <b>POKEMON10</b> – 10% off on ₹600+<br>
-  • <b>WELCOME50</b> – ₹50 off on first order (₹300+)<br>
-  • <b>EPIC50</b> – ₹50 off on ₹500+
+Coupons Available:<br>
+• <b>POKEMON10</b> – 10% off on ₹600+<br>
+• <b>WELCOME50</b> – ₹50 off on first order (₹300+)<br>
+• <b>EPIC50</b> – ₹50 off on ₹500+
 </div>
 
 <div id="items"></div>
@@ -105,84 +98,96 @@
 <button class="pay" onclick="placeOrder()">Place Order</button>
 
 <script>
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  let orders = JSON.parse(localStorage.getItem("orders")) || [];
-  let discount = 0;
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+let discount = 0;
 
-  function renderCart() {
-    const box = document.getElementById("items");
-    box.innerHTML = "";
-    let total = 0;
+function renderCart(){
+  const box = document.getElementById("items");
+  box.innerHTML = "";
+  let total = 0;
 
-    cart.forEach((item, index) => {
-      total += item.price * item.qty;
+  cart.forEach((item, index)=>{
+    total += item.price * item.qty;
+    box.innerHTML += `
+      <div class="item">
+        <b>${item.name}</b><br>
+        ₹${item.price} × ${item.qty}<br><br>
+        <button class="qty-btn minus" onclick="changeQty(${index},-1)">−</button>
+        <button class="qty-btn plus" onclick="changeQty(${index},1)">+</button>
+      </div>
+    `;
+  });
 
-      box.innerHTML += `
-        <div class="item">
-          <strong>${item.name}</strong><br>
-          ₹${item.price} × ${item.qty}<br><br>
-          <button class="qty-btn minus" onclick="changeQty(${index}, -1)">−</button>
-          <button class="qty-btn plus" onclick="changeQty(${index}, 1)">+</button>
-        </div>
-      `;
-    });
+  total -= discount;
+  if(total < 0) total = 0;
+  document.getElementById("total").innerText = "Total: ₹" + total;
+}
 
-    total -= discount;
-    if (total < 0) total = 0;
-    document.getElementById("total").innerText = "Total: ₹" + total;
+function changeQty(index, change){
+  cart[index].qty += change;
+  if(cart[index].qty <= 0){
+    cart.splice(index,1);
   }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  discount = 0;
+  renderCart();
+}
 
-  function changeQty(index, change) {
-    cart[index].qty += change;
-    if (cart[index].qty <= 0) cart.splice(index, 1);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    discount = 0;
-    renderCart();
+function applyCoupon(){
+  const code = document.getElementById("coupon").value.toUpperCase();
+  const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const firstUsed = localStorage.getItem("firstOrderCompleted");
+
+  discount = 0;
+
+  if(code === "POKEMON10" && total >= 600){
+    discount = Math.floor(total * 0.10);
   }
-
-  function applyCoupon() {
-    const code = document.getElementById("coupon").value.toUpperCase();
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const firstUsed = localStorage.getItem("firstOrderCompleted");
-
-    discount = 0;
-
-    if (code === "POKEMON10" && total >= 600) discount = Math.floor(total * 0.10);
-    else if (code === "EPIC50" && total >= 500) discount = 50;
-    else if (code === "WELCOME50" && !firstUsed && total >= 300) discount = 50;
-    else alert("Coupon not valid");
-
-    renderCart();
+  else if(code === "EPIC50" && total >= 500){
+    discount = 50;
   }
-
-  function placeOrder() {
-    if (cart.length === 0) {
-      alert("Cart is empty");
-      return;
-    }
-
-    const order = {
-      id: "ORD" + Date.now(),
-      items: cart,
-      total: document.getElementById("total").innerText,
-      date: new Date().toLocaleString()
-    };
-
-    orders.push(order);
-    localStorage.setItem("orders", JSON.stringify(orders));
-    localStorage.setItem("firstOrderCompleted", "true");
-
-    // WhatsApp payment
-    const msg = encodeURIComponent(
-      `New Order ${order.id}\n${order.items.map(i => `${i.name} x${i.qty}`).join("\n")}\n${order.total}`
-    );
-
-    localStorage.removeItem("cart");
-    window.location.href = `https://wa.me/919836190283?text=${msg}`;
+  else if(code === "WELCOME50" && total >= 300 && !firstUsed){
+    discount = 50;
+  }
+  else{
+    alert("Coupon not valid");
   }
 
   renderCart();
-      </script>
+}
+
+function placeOrder(){
+  if(cart.length === 0){
+    alert("Cart is empty");
+    return;
+  }
+
+  const totalText = document.getElementById("total").innerText;
+
+  const order = {
+    id: "ORD" + Date.now(),
+    items: cart,
+    total: totalText,
+    date: new Date().toLocaleString()
+  };
+
+  orders.push(order);
+  localStorage.setItem("orders", JSON.stringify(orders));
+  localStorage.setItem("firstOrderCompleted","true");
+  localStorage.removeItem("cart");
+
+  const msg = encodeURIComponent(
+    `New Order ${order.id}\n` +
+    order.items.map(i=>`${i.name} x ${i.qty}`).join("\n") +
+    `\n${order.total}`
+  );
+
+  window.location.href = `https://wa.me/91XXXXXXXXXX?text=${msg}`;
+}
+
+renderCart();
+</script>
 
 </body>
 </html>
