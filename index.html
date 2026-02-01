@@ -9,7 +9,7 @@
 <header class="top-bar">
 <div class="menu">
   <button class="menu-btn" 
-    onclick="toggleMenu()">☰</button>
+    onclick="openSidebar()">☰</button>
   <div class="menu-content">
     <a href="orders.html">Orders</a>
     <a href="account.html">My Account</a>
@@ -38,20 +38,24 @@
 <div id="productList" class="grid"></div>
 
 <script src="products.js"></script>
+  <!-- SIDEBAR -->
+<div id="sidebar" class="sidebar">
+  <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">×</a>
+  <a href="orders.html">📦 Orders</a>
+  <a href="account.html">👤 My Account</a>
+</div>
+
+<div id="overlay" onclick="closeSidebar()"></div>
   <script>
-function toggleMenu() {
-  const menu = document.querySelector(".menu-content");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
+function openSidebar() {
+  document.getElementById("sidebar").style.left = "0";
+  document.getElementById("overlay").style.display = "block";
 }
 
-document.addEventListener("click", function (e) {
-  const menu = document.querySelector(".menu-content");
-  const btn = document.querySelector(".menu-btn");
-
-  if (!menu.contains(e.target) && !btn.contains(e.target)) {
-    menu.style.display = "none";
-  }
-});
+function closeSidebar() {
+  document.getElementById("sidebar").style.left = "-260px";
+  document.getElementById("overlay").style.display = "none";
+}
   </script>
 </body>
 </html>
