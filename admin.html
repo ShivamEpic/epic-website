@@ -1,53 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin – Confirm Payments</title>
+  <title>Admin – Add Products</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1 style="text-align:center;">Admin Panel – Payments</h1>
-
-<div id="orders"></div>
+<h1 style="text-align:center;">Admin Panel – Add Product</h1>
 
 <script>
-const ADMIN_PIN = "2509"; // 🔴 CHANGE THIS PIN
+  const ADMIN_PIN = "2509";
+  const pin = prompt("Enter Admin PIN");
 
-let pin = prompt("Enter Admin PIN");
-if (pin !== ADMIN_PIN) {
-  alert("Access Denied");
-  document.body.innerHTML = "";
-  throw new Error("Unauthorized");
-}
+  if (pin !== ADMIN_PIN) {
+    alert("Access Denied");
+    document.body.innerHTML = "";
+    throw new Error("Unauthorized");
+  }
+</script>
 
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
-const box = document.getElementById("orders");
+<div style="max-width:400px;margin:auto;">
+  <input id="name" placeholder="Product Name"><br><br>
+  <input id="price" type="number" placeholder="Price"><br><br>
+  <input id="image" placeholder="Image path (images/pack.png)"><br><br>
+  <textarea id="desc" placeholder="Description"></textarea><br><br>
 
-if (orders.length === 0) {
-  box.innerHTML = "<p>No orders found</p>";
-}
+  <button onclick="addProduct()">Add Product</button>
+</div>
 
-orders.forEach((o, i) => {
-  box.innerHTML += `
-    <div class="order-box">
-      <h3>Order #${i + 1}</h3>
-      <p>Total: ₹${o.total}</p>
-      <p>Status: <b>${o.status}</b></p>
+<hr>
 
-      ${o.status !== "Paid"
-        ? `<button onclick="markPaid(${i})">Mark as Paid</button>`
-        : `<span style="color:lightgreen;">✔ Payment Confirmed</span>`
-      }
-    </div>
-  `;
-});
+<h2 style="text-align:center;">Existing Products</h2>
+<div id="list"></div>
 
-function markPaid(index) {
-  orders[index].status = "Paid";
-  localStorage.setItem("orders", JSON.stringify(orders));
-  alert("Payment confirmed");
-  location.reload();
-}
+<script>
+  let products = JSON.parse(localStorage.getItem("products")) || [];
+
+  function addProduct() {
+    const product = {
+      id: Date.now(),
+      name: document.getElementById("name").value,
+      price: Number(document.getElementById("price").value),
+      image: document.getElementById("image").value,
+      description: document.getElementById("desc").value
+    };
+
+    products.push(product);
+    localStorage.setItem("products", JSON.stringify(products));
+    alert("Product Added!");
+    location.reload();
+  }
+
+  function deleteProduct(id) {
+    products = products.filter(p => p.id !== id);
+    localStorage.setItem("products", JSON.stringify(products));
+    location.reload();
+  }
+
+  const box = document.getElementById("list");
+  products.forEach(p => {
+    box.innerHTML += `
+      <div class="card">
+        <img src="${p.image}">
+        <h3>${p.name}</h3>
+        <p>₹${p.price}</p>
+        <button onclick="deleteProduct(${p.id})">Delete</button>
+      </div>
+    `;
+  });
 </script>
 
 </body>
