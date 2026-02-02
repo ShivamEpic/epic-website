@@ -38,7 +38,17 @@ const products = [
     description: "Sealed Crimson Haze booster pack."
   }
 ];
+// ================================
+// MERGE ADMIN PRODUCTS (localStorage)
+// ================================
+const adminProducts = JSON.parse(localStorage.getItem("products")) || [];
 
+adminProducts.forEach(ap => {
+  // avoid duplicate IDs
+  if (!products.find(p => p.id == ap.id)) {
+    products.push(ap);
+  }
+});
 // =======================
 // RENDER PRODUCTS
 // =======================
