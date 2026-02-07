@@ -1,145 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Your Cart</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Cart | Epic Pokémon Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#111;
-  color:#fff;
-}
+  <style>
+    body {
+      background: #0f0f0f;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
 
-header{
-  background:#000;
-  padding:15px;
-  display:flex;
-  align-items:center;
-}
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-header a{
-  color:#fff;
-  text-decoration:none;
-  font-size:20px;
-  margin-right:10px;
-}
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #1c1c1c;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
 
-.cart-container{
-  padding:15px;
-}
+    .cart-item img {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+      background: #000;
+      border-radius: 6px;
+    }
 
-.cart-item{
-  background:#1c1c1c;
-  padding:12px;
-  border-radius:8px;
-  margin-bottom:10px;
-}
+    .cart-info {
+      flex: 1;
+    }
 
-.cart-item p{
-  margin:5px 0;
-}
+    .cart-info h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
 
-.qty-btn{
-  background:#333;
-  color:#fff;
-  border:none;
-  padding:4px 8px;
-  margin:0 5px;
-  cursor:pointer;
-}
+    .price {
+      color: #4caf50;
+      font-weight: bold;
+    }
 
-.remove{
-  background:red;
-  border:none;
-  color:white;
-  padding:5px 10px;
-  margin-top:8px;
-  cursor:pointer;
-}
+    .qty {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
 
-.total{
-  font-size:20px;
-  margin-top:15px;
-  font-weight:bold;
-}
+    .qty button {
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 4px 8px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
 
-.checkout-btn{
-  display:inline-block;
-  margin-top:15px;
-  background:green;
-  color:white;
-  padding:12px 18px;
-  text-decoration:none;
-  border-radius:6px;
-}
+    .remove {
+      background: #c0392b;
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
-.empty{
-  opacity:0.7;
-}
-</style>
+    .total {
+      text-align: right;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    .checkout {
+      width: 100%;
+      margin-top: 15px;
+      padding: 14px;
+      background: #28a745;
+      border: none;
+      color: white;
+      font-size: 18px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .empty {
+      text-align: center;
+      opacity: 0.7;
+      margin-top: 40px;
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <a href="index.html">←</a>
-  <h2>Your Cart</h2>
-</header>
+<h1>Your Cart</h1>
 
-<div class="cart-container" id="cartItems"></div>
-<div class="cart-container">
-  <div class="total" id="total"></div>
-  <a href="checkout.html" class="checkout-btn">Proceed to Checkout</a>
-</div>
+<div id="cartItems"></div>
+
+<div class="total" id="totalPrice">Total: ₹0</div>
+
+<button class="checkout" onclick="goCheckout()">Place Order</button>
 
 <script>
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-const cartDiv = document.getElementById("cartItems");
-const totalDiv = document.getElementById("total");
+  const cartContainer = document.getElementById("cartItems");
+  const totalPriceEl = document.getElementById("totalPrice");
 
-if(cart.length === 0){
-  cartDiv.innerHTML = "<p class='empty'>Your cart is empty</p>";
-}else{
-  let total = 0;
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  cart.forEach((item, index) => {
-    const subtotal = item.price * item.qty;
-    total += subtotal;
+  function renderCart() {
+    cartContainer.innerHTML = "";
 
-    cartDiv.innerHTML += `
-      <div class="cart-item">
-        <p><b>${item.name}</b></p>
-        <p>₹${item.price}</p>
-        <p>
-          Qty:
-          <button class="qty-btn" onclick="changeQty(${index}, -1)">−</button>
-          ${item.qty}
-          <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
-        </p>
-        <p><b>Subtotal: ₹${subtotal}</b></p>
+    if (cart.length === 0) {
+      cartContainer.innerHTML = '<p class="empty">Your cart is empty</p>';
+      totalPriceEl.innerText = "Total: ₹0";
+      return;
+    }
+
+    let total = 0;
+
+    cart.forEach((item, index) => {
+      if (!item.name || !item.price) return;
+
+      total += item.price * item.qty;
+
+      const div = document.createElement("div");
+      div.className = "cart-item";
+
+      div.innerHTML = `
+        <img src="images/${item.image}" alt="${item.name}">
+        <div class="cart-info">
+          <h3>${item.name}</h3>
+          <div class="price">₹${item.price}</div>
+          <div class="qty">
+            <button onclick="changeQty(${index}, -1)">−</button>
+            <span>${item.qty}</span>
+            <button onclick="changeQty(${index}, 1)">+</button>
+          </div>
+        </div>
         <button class="remove" onclick="removeItem(${index})">Remove</button>
-      </div>
-    `;
-  });
+      `;
 
-  totalDiv.innerText = "Total: ₹" + total;
-}
+      cartContainer.appendChild(div);
+    });
 
-function changeQty(i, n){
-  cart[i].qty += n;
-  if(cart[i].qty <= 0) cart.splice(i,1);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  location.reload();
-}
+    totalPriceEl.innerText = `Total: ₹${total}`;
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
 
-function removeItem(i){
-  cart.splice(i,1);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  location.reload();
-}
+  function changeQty(index, change) {
+    cart[index].qty += change;
+    if (cart[index].qty <= 0) cart.splice(index, 1);
+    renderCart();
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    renderCart();
+  }
+
+  function goCheckout() {
+    if (cart.length === 0) {
+      alert("Cart is empty");
+      return;
+    }
+    window.location.href = "checkout.html";
+  }
+
+  renderCart();
 </script>
 
 </body>
