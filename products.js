@@ -1,3 +1,5 @@
+// products.js (Firestore + Cart fixed)
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
   getFirestore,
@@ -5,23 +7,26 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// FIREBASE CONFIG
+/* ================= FIREBASE CONFIG ================= */
 const firebaseConfig = {
-  apiKey: "AIzaSyB2YCszOAx2I5omg1GArDxFxxAz4xWUME",
+  apiKey: "AIzaSyB2YCsZ0Ax2ISomg16rDxFXxAz4xUME",
   authDomain: "epic-pokemon-store.firebaseapp.com",
   projectId: "epic-pokemon-store",
   storageBucket: "epic-pokemon-store.appspot.com",
   messagingSenderId: "667844835352",
-  appId: "1:667844835352:web:002a3d9018b449cfc4ab6d",
+  appId: "1:667844835352:web:002a3d9018b449cf4ab6d",
   measurementId: "G-ZDV918PN02"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+/* ================= LOAD PRODUCTS ================= */
 const container = document.getElementById("productList");
 
 async function loadProducts() {
+  if (!container) return;
+
   container.innerHTML = "";
 
   const snap = await getDocs(collection(db, "products"));
@@ -33,14 +38,17 @@ async function loadProducts() {
     card.className = "card";
 
     card.innerHTML = `
-      <img src="images/${p.image}">
+      <img src="images/${p.image}" alt="${p.name}">
       <h3>${p.name}</h3>
       <p class="price">₹${p.price}</p>
       <div class="btns">
-        <button class="cart" onclick="addToCart('${doc.id}')">Add to Cart</button>
-        <button class="buy" onclick="buyNow('${doc.id}')">Buy Now</button>
+        <button class="cart">Add to Cart</button>
+        <button class="buy">Buy Now</button>
       </div>
     `;
+
+    card.querySelector(".cart").onclick = () => addToCart(p);
+    card.querySelector(".buy").onclick = () => buyNow(p);
 
     container.appendChild(card);
   });
@@ -48,15 +56,36 @@ async function loadProducts() {
 
 loadProducts();
 
-// CART
-window.addToCart = function (id) {
+/* ================= CART LOGIC ================= */
+
+function addToCart(product) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart.push({ id, qty: 1 });
+
+  const existing = cart.find(item => item.name === product.name);
+
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({
+      name: product.name,
+      price: Number(product.price),
+      image: product.image,
+      qty: 1
+    });
+  }
+
   localStorage.setItem("cart", JSON.stringify(cart));
   alert("Added to cart");
-};
+}
 
-window.buyNow = function (id) {
-  localStorage.setItem("cart", JSON.stringify([{ id, qty: 1 }]));
+function buyNow(product) {
+  const cart = [{
+    name: product.name,
+    price: Number(product.price),
+    image: product.image,
+    qty: 1
+  }];
+
+  localStorage.setItem("cart", JSON.stringify(cart));
   window.location.href = "checkout.html";
-};
+}
