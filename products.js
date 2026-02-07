@@ -1,7 +1,7 @@
 // =======================
 // PRODUCTS DATA
 // =======================
-const products = [
+export const products = [
   {
     id: 1,
     name: "Clay Burst Booster Pack (Sealed) | Korean",
