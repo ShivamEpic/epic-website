@@ -33,42 +33,8 @@
 <h2 style="text-align:center;">Existing Products</h2>
 <div id="list"></div>
 
-<script>
-  let products = JSON.parse(localStorage.getItem("products")) || [];
-
-  function addProduct() {
-    const product = {
-      id: Date.now(),
-      name: document.getElementById("name").value,
-      price: Number(document.getElementById("price").value),
-      image: document.getElementById("image").value,
-      description: document.getElementById("desc").value
-    };
-
-    products.push(product);
-    localStorage.setItem("products", JSON.stringify(products));
-    alert("Product Added!");
-    location.reload();
-  }
-
-  function deleteProduct(id) {
-    products = products.filter(p => p.id !== id);
-    localStorage.setItem("products", JSON.stringify(products));
-    location.reload();
-  }
-
-  const box = document.getElementById("list");
-  products.forEach(p => {
-    box.innerHTML += `
-      <div class="card">
-        <img src="${p.image}">
-        <h3>${p.name}</h3>
-        <p>₹${p.price}</p>
-        <button onclick="deleteProduct(${p.id})">Delete</button>
-      </div>
-    `;
-  });
-</script>
+<script type="module" 
+  src="admin.js"></script>
 
 </body>
 </html>
