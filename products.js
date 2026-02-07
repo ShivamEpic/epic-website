@@ -1,144 +1,62 @@
-// =======================
-// PRODUCTS DATA
-// =======================
-export const products = [
-  {
-    id: 1,
-    name: "Clay Burst Booster Pack (Sealed) | Korean",
-    price: 200,
-    image: "sv2d-clay-burst-pack.png",
-    description: "Sealed Korean Clay Burst booster pack."
-  },
-  {
-    id: 2,
-    name: "InfernoX Booster Box (Sealed) | Korean",
-    price: 4599,
-    image: "inferno-booster-box.png",
-    description: "High-demand sealed InfernoX booster box."
-  },
-  {
-    id: 3,
-    name: "Tsareena ex SR 080/066 | Ancient Roar",
-    price: 400,
-    image: "tsareena-ex-sv4k-080.png",
-    description: "Rare Tsareena ex SR card from Ancient Roar set."
-  },
-  {
-    id: 4,
-    name: "Battle Partners Booster Pack | Korean",
-    price: 250,
-    image: "battle-partners-sv9-korean.png",
-    description: "Korean Battle Partners booster pack."
-  },
-  {
-    id: 5,
-    name: "Crimson Haze Booster Pack (Sealed) | Korean [sv5a]",
-    price: 250,
-    image: "Crimson_Haze_Korean_Booster.png",
-    description: "Sealed Crimson Haze booster pack."
-  }
-];
-// ================================
-// MERGE ADMIN PRODUCTS (localStorage)
-// ================================
-const adminProducts = JSON.parse(localStorage.getItem("products")) || [];
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-adminProducts.forEach(ap => {
-  // avoid duplicate IDs
-  if (!products.find(p => p.id == ap.id)) {
-    products.push(ap);
-  }
-});
-// =======================
-// RENDER PRODUCTS
-// =======================
+// FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyB2YCszOAx2I5omg1GArDxFxxAz4xWUME",
+  authDomain: "epic-pokemon-store.firebaseapp.com",
+  projectId: "epic-pokemon-store",
+  storageBucket: "epic-pokemon-store.appspot.com",
+  messagingSenderId: "667844835352",
+  appId: "1:667844835352:web:002a3d9018b449cfc4ab6d",
+  measurementId: "G-ZDV918PN02"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const container = document.getElementById("productList");
 
-if (container) {
-  products.forEach(p => {
+async function loadProducts() {
+  container.innerHTML = "";
+
+  const snap = await getDocs(collection(db, "products"));
+
+  snap.forEach(doc => {
+    const p = doc.data();
+
     const card = document.createElement("div");
     card.className = "card";
 
     card.innerHTML = `
-      <img src="${p.image}" alt="${p.name}" onclick="openProduct(${p.id})">
-      <h3 onclick="openProduct(${p.id})">${p.name}</h3>
+      <img src="images/${p.image}">
+      <h3>${p.name}</h3>
       <p class="price">₹${p.price}</p>
-
       <div class="btns">
-        <button class="cart" onclick="addToCart(${p.id})">Add to Cart</button>
-        <button class="buy" onclick="buyNow(${p.id})">Buy Now</button>
+        <button class="cart" onclick="addToCart('${doc.id}')">Add to Cart</button>
+        <button class="buy" onclick="buyNow('${doc.id}')">Buy Now</button>
       </div>
     `;
 
     container.appendChild(card);
   });
 }
-const selectedId = localStorage.getItem("selectedProduct");
 
-if (selectedId && document.getElementById("productName")) {
-  const product = products.find(p => p.id == selectedId);
+loadProducts();
 
-  document.getElementById("productImage").src = product.image;
-  document.getElementById("productName").innerText = product.name;
-  document.getElementById("productDesc").innerText = product.description;
-  document.getElementById("productPrice").innerText = "₹" + product.price;
-}
-
-function addToCartFromProduct() {
-  addToCart(Number(selectedId));
-}
-
-function buyNowFromProduct() {
-  buyNow(Number(selectedId));
-}
-// =======================
-// OPEN PRODUCT PAGE
-// =======================
-function openProduct(id) {
-  localStorage.setItem("selectedProduct", id);
-  window.location.href = "product.html";
-}
-function openCart() {
-  window.location.href = "cart.html";
-}
-// =======================
-// ADD TO CART
-// =======================
-function addToCart(id) {
+// CART
+window.addToCart = function (id) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const product = products.find(p => p.id === id);
-
-  const existing = cart.find(item => item.id === id);
-
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    cart.push({ ...product, qty: 1 });
-  }
-
+  cart.push({ id, qty: 1 });
   localStorage.setItem("cart", JSON.stringify(cart));
-  showToast();
-}
+  alert("Added to cart");
+};
 
-// =======================
-// BUY NOW
-// =======================
-function buyNow(id) {
-  const product = products.find(p => p.id === id);
-  localStorage.setItem("cart", JSON.stringify([{ ...product, qty: 1 }]));
+window.buyNow = function (id) {
+  localStorage.setItem("cart", JSON.stringify([{ id, qty: 1 }]));
   window.location.href = "checkout.html";
-}
-
-// =======================
-// TOAST (NO ALERT POPUP)
-// =======================
-function showToast() {
-  const toast = document.getElementById("toast");
-  if (!toast) return;
-
-  toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 1500);
-}
+};
