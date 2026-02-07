@@ -1,43 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Upload Products to Firebase</title>
+  <title>Upload Products</title>
 </head>
 <body>
   <h2>Uploading products to Firebase...</h2>
 
-  <!-- Firebase SDK -->
   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-  import { products } from "./products.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "XXXX",
-    appId: "XXXX"
-  };
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "XXXX",
+      appId: "XXXX"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  async function uploadAll() {
-    for (const p of products) {
-      await addDoc(collection(db, "products"), {
-        name: p.name,
-        price: p.price,
-        image: p.image,
-        description: p.description
-      });
-      console.log("Uploaded:", p.name);
+    // 🔥 PASTE PRODUCTS DIRECTLY (NO IMPORT)
+    const products = [
+      {
+        name: "Clay Burst Booster Pack (Sealed) | Korean",
+        price: 200,
+        image: "sv2d-clay-burst-pack.png",
+        description: "Sealed Korean Clay Burst booster pack."
+      },
+      {
+        name: "InfernoX Booster Box (Sealed) | Korean",
+        price: 4599,
+        image: "inferno-booster-box.png",
+        description: "High-demand sealed InfernoX booster box."
+      },
+      {
+        name: "Tsareena ex SR 080/066 | Ancient Roar",
+        price: 400,
+        image: "tsareena-ex.png",
+        description: "Rare Tsareena ex SR card from Ancient Roar set."
+      },
+      {
+        name: "Battle Partners Booster Pack | Korean",
+        price: 250,
+        image: "battle-partners-pack.png",
+        description: "Korean Battle Partners booster pack."
+      },
+      {
+        name: "Crimson Haze Booster Pack (Sealed) | Korean",
+        price: 250,
+        image: "crimson-haze.png",
+        description: "Sealed Crimson Haze booster pack."
+      }
+    ];
+
+    async function uploadAll() {
+      for (const p of products) {
+        await addDoc(collection(db, "products"), p);
+        console.log("Uploaded:", p.name);
+      }
+      alert("✅ ALL PRODUCTS UPLOADED SUCCESSFULLY");
     }
-    alert("✅ ALL PRODUCTS UPLOADED TO FIRESTORE");
-  }
 
-  uploadAll();
+    uploadAll();
   </script>
 </body>
 </html>
