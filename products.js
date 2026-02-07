@@ -75,9 +75,35 @@ function addToCart(product) {
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Added to cart");
+
+  animateStar();
+  updateCartBadge();
+}
+function updateCartBadge() {
+  const badge = document.getElementById("cart-badge");
+  if (!badge) return;
+
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const count = cart.reduce((sum, i) => sum + i.qty, 0);
+
+  badge.innerText = count;
+  badge.classList.add("bump");
+
+  setTimeout(() => badge.classList.remove("bump"), 300);
 }
 
+function animateStar() {
+  const star = document.createElement("div");
+  star.className = "star";
+  star.innerText = "⭐";
+
+  star.style.left = (window.innerWidth - 30) + "px";
+  star.style.top = (window.innerHeight - 90) + "px";
+
+  document.body.appendChild(star);
+
+  setTimeout(() => star.remove(), 1000);
+}
 function buyNow(product) {
   const cart = [{
     name: product.name,
