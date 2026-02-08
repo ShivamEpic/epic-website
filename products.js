@@ -38,7 +38,7 @@ async function loadProducts() {
     card.className = "card";
 
     card.innerHTML = `
-      <img src="images/${p.image}" alt="${p.name}">
+      <img src="${p.image}" alt="${p.name}">
       <h3>${p.name}</h3>
       <p class="price">₹${p.price}</p>
       <div class="btns">
@@ -95,7 +95,7 @@ function updateCartBadge() {
 function animateStar() {
   const star = document.createElement("div");
   star.className = "star";
-  star.innerText = "⭐";
+  star.innerText = "✨";
 
   star.style.left = (window.innerWidth - 30) + "px";
   star.style.top = (window.innerHeight - 90) + "px";
