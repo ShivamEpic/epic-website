@@ -1,4 +1,4 @@
-// products.js (Firestore + Cart fixed)
+// products.js (Firebase + Cart + Animation FIXED)
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
@@ -9,7 +9,7 @@ import {
 
 /* ================= FIREBASE CONFIG ================= */
 const firebaseConfig = {
-  apiKey: "AIzaSyB2YCsZ0Ax2ISomg16rDxFXxAz4xUME",
+  apiKey: "AIzaSyB2YCsZ0Ax2ISomg16rDFxXAz4XWUME",
   authDomain: "epic-pokemon-store.firebaseapp.com",
   projectId: "epic-pokemon-store",
   storageBucket: "epic-pokemon-store.appspot.com",
@@ -52,12 +52,13 @@ async function loadProducts() {
 
     container.appendChild(card);
   });
+
+  updateCartBadge();
 }
 
 loadProducts();
 
 /* ================= CART LOGIC ================= */
-
 function addToCart(product) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -79,31 +80,7 @@ function addToCart(product) {
   animateStar();
   updateCartBadge();
 }
-function updateCartBadge() {
-  const badge = document.getElementById("cart-badge");
-  if (!badge) return;
 
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const count = cart.reduce((sum, i) => sum + i.qty, 0);
-
-  badge.innerText = count;
-  badge.classList.add("bump");
-
-  setTimeout(() => badge.classList.remove("bump"), 300);
-}
-
-function animateStar() {
-  const star = document.createElement("div");
-  star.className = "star";
-  star.innerText = "✨";
-
-  star.style.left = (window.innerWidth - 30) + "px";
-  star.style.top = (window.innerHeight - 90) + "px";
-
-  document.body.appendChild(star);
-
-  setTimeout(() => star.remove(), 1000);
-}
 function buyNow(product) {
   const cart = [{
     name: product.name,
@@ -115,22 +92,30 @@ function buyNow(product) {
   localStorage.setItem("cart", JSON.stringify(cart));
   window.location.href = "checkout.html";
 }
-window.addToCart = function (product) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  const existing = cart.find(item => item.name === product.name);
+/* ================= CART BADGE ================= */
+function updateCartBadge() {
+  const badge = document.getElementById("cart-badge");
+  if (!badge) return;
 
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    cart.push({
-      name: product.name,
-      price: Number(product.price),
-      image: product.image,
-      qty: 1
-    });
-  }
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const count = cart.reduce((sum, item) => sum + item.qty, 0);
 
-  localStorage.setItem("cart", JSON.stringify(cart));
-  updateCartCount();
-};
+  badge.innerText = count;
+  badge.classList.add("bump");
+  setTimeout(() => badge.classList.remove("bump"), 300);
+}
+
+/* ================= STAR ANIMATION ================= */
+function animateStar() {
+  const star = document.createElement("div");
+  star.className = "star";
+  star.innerText = "⭐";
+
+  star.style.left = (window.innerWidth - 40) + "px";
+  star.style.top = (window.innerHeight - 90) + "px";
+
+  document.body.appendChild(star);
+
+  setTimeout(() => star.remove(), 1000);
+}
