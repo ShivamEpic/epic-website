@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Checkout</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
@@ -11,13 +12,10 @@ body{
   font-family:Arial, sans-serif;
   padding:20px;
 }
-
-h1{
-  text-align:center;
-}
+h1{text-align:center}
 
 .info{
-  opacity:0.85;
+  opacity:.85;
   margin-bottom:15px;
 }
 
@@ -35,23 +33,18 @@ h1{
   cursor:pointer;
   font-size:16px;
 }
+.minus{background:#ff4444}
+.plus{background:#22c55e}
 
-.plus{background:#22c55e;}
-.minus{background:#ef4444;}
-
-.coupon{
-  margin-top:20px;
-}
-
+.coupon{margin-top:20px}
 input{
   padding:8px;
   border-radius:6px;
   border:none;
   width:200px;
 }
-
 button{
-  padding:8px 12px;
+  padding:8px 14px;
   border-radius:6px;
   border:none;
   cursor:pointer;
@@ -61,16 +54,16 @@ button{
 
 .total{
   font-size:20px;
-  margin-top:20px;
   font-weight:bold;
+  margin-top:20px;
 }
 
 .pay{
   width:100%;
   padding:14px;
-  margin-top:20px;
   font-size:18px;
   background:#22c55e;
+  margin-top:20px;
 }
 </style>
 </head>
@@ -107,8 +100,15 @@ function renderCart(){
   box.innerHTML = "";
   let total = 0;
 
-  cart.forEach((item, index)=>{
+  if(cart.length === 0){
+    box.innerHTML = "<p>Your cart is empty</p>";
+    document.getElementById("total").innerText = "Total: ₹0";
+    return;
+  }
+
+  cart.forEach((item,index)=>{
     total += item.price * item.qty;
+
     box.innerHTML += `
       <div class="item">
         <b>${item.name}</b><br>
@@ -121,14 +121,13 @@ function renderCart(){
 
   total -= discount;
   if(total < 0) total = 0;
+
   document.getElementById("total").innerText = "Total: ₹" + total;
 }
 
-function changeQty(index, change){
+function changeQty(index,change){
   cart[index].qty += change;
-  if(cart[index].qty <= 0){
-    cart.splice(index,1);
-  }
+  if(cart[index].qty <= 0) cart.splice(index,1);
   localStorage.setItem("cart", JSON.stringify(cart));
   discount = 0;
   renderCart();
@@ -136,7 +135,7 @@ function changeQty(index, change){
 
 function applyCoupon(){
   const code = document.getElementById("coupon").value.toUpperCase();
-  const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const total = cart.reduce((s,i)=>s + i.price*i.qty,0);
   const firstUsed = localStorage.getItem("firstOrderCompleted");
 
   discount = 0;
@@ -151,7 +150,7 @@ function applyCoupon(){
     discount = 50;
   }
   else{
-    alert("Coupon not valid");
+    alert("Invalid coupon");
   }
 
   renderCart();
@@ -166,7 +165,7 @@ function placeOrder(){
   const totalText = document.getElementById("total").innerText;
 
   const order = {
-    id: "ORD" + Date.now(),
+    id: "ORD-" + Date.now(),
     items: cart,
     total: totalText,
     date: new Date().toLocaleString()
@@ -175,15 +174,16 @@ function placeOrder(){
   orders.push(order);
   localStorage.setItem("orders", JSON.stringify(orders));
   localStorage.setItem("firstOrderCompleted","true");
-  localStorage.removeItem("cart");
 
   const msg = encodeURIComponent(
-    `New Order ${order.id}\n` +
-    order.items.map(i=>`${i.name} x ${i.qty}`).join("\n") +
-    `\n${order.total}`
+    `New Order\n\n` +
+    cart.map(i=>`${i.name} x ${i.qty}`).join("\n") +
+    `\n\n${totalText}`
   );
 
-  window.location.href = `https://wa.me/919836190283?text=${msg}`;
+  localStorage.removeItem("cart");
+
+  window.open(`https://wa.me/919836190823?text=${msg}`, "_blank");
 }
 
 renderCart();
