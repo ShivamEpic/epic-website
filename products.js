@@ -33,7 +33,10 @@ async function loadProducts() {
 
   snap.forEach(doc => {
     const p = doc.data();
-
+    p.id = doc.id;
+    card.addEventListener("click", () => {
+  window.location.href = `product.html?id=${p.id}`;
+});
     const card = document.createElement("div");
     card.className = "card";
 
@@ -47,8 +50,15 @@ async function loadProducts() {
       </div>
     `;
 
-    card.querySelector(".cart").onclick = () => addToCart(p);
-    card.querySelector(".buy").onclick = () => buyNow(p);
+    card.querySelector(".cart").onclick = (e) => {
+  e.stopPropagation();
+  addToCart(p);
+};
+
+card.querySelector(".buy").onclick = (e) => {
+  e.stopPropagation();
+  buyNow(p);
+};
 
     container.appendChild(card);
   });
