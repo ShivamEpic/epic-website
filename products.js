@@ -115,3 +115,22 @@ function buyNow(product) {
   localStorage.setItem("cart", JSON.stringify(cart));
   window.location.href = "checkout.html";
 }
+window.addToCart = function (product) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const existing = cart.find(item => item.name === product.name);
+
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({
+      name: product.name,
+      price: Number(product.price),
+      image: product.image,
+      qty: 1
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+};
