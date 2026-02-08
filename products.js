@@ -9,7 +9,7 @@ import {
 
 /* ================= FIREBASE CONFIG ================= */
 const firebaseConfig = {
-  apiKey: "AIzaSyB2YCsZ0Ax2ISomg16rDFxXAz4XWUME",
+  apiKey: "AIzaSyB2YCsZ0Ax2ISom16rDFxXAZ4XUME",
   authDomain: "epic-pokemon-store.firebaseapp.com",
   projectId: "epic-pokemon-store",
   storageBucket: "epic-pokemon-store.appspot.com",
@@ -34,14 +34,16 @@ async function loadProducts() {
   snap.forEach(doc => {
     const p = doc.data();
     p.id = doc.id;
-    card.addEventListener("click", () => {
-  window.location.href = `product.html?id=${p.id}`;
-});
+
     const card = document.createElement("div");
     card.className = "card";
 
+    const imageSrc = p.image && p.image.trim() !== ""
+      ? p.image
+      : "https://via.placeholder.com/200x280?text=No+Image";
+
     card.innerHTML = `
-      <img src="${p.image}" alt="${p.name}">
+      <img src="${imageSrc}" alt="${p.name}">
       <h3>${p.name}</h3>
       <p class="price">₹${p.price}</p>
       <div class="btns">
@@ -50,15 +52,22 @@ async function loadProducts() {
       </div>
     `;
 
-    card.querySelector(".cart").onclick = (e) => {
-  e.stopPropagation();
-  addToCart(p);
-};
+    // 👉 Card click = product page
+    card.addEventListener("click", () => {
+      window.location.href = `product.html?id=${p.id}`;
+    });
 
-card.querySelector(".buy").onclick = (e) => {
-  e.stopPropagation();
-  buyNow(p);
-};
+    // 👉 Add to Cart
+    card.querySelector(".cart").addEventListener("click", (e) => {
+      e.stopPropagation();
+      addToCart(p);
+    });
+
+    // 👉 Buy Now
+    card.querySelector(".buy").addEventListener("click", (e) => {
+      e.stopPropagation();
+      buyNow(p);
+    });
 
     container.appendChild(card);
   });
@@ -113,6 +122,7 @@ function updateCartBadge() {
 
   badge.innerText = count;
   badge.classList.add("bump");
+
   setTimeout(() => badge.classList.remove("bump"), 300);
 }
 
