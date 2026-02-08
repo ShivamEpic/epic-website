@@ -1,63 +1,52 @@
-const cartItemsDiv = document.getElementById("cartItems");
-const totalPriceDiv = document.getElementById("totalPrice");
+const cartItems = document.getElementById("cartItems");
+const totalEl = document.getElementById("total");
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 function renderCart() {
-  cartItemsDiv.innerHTML = "";
+  cartItems.innerHTML = "";
+  let total = 0;
 
   if (cart.length === 0) {
-    cartItemsDiv.innerHTML = "<p>Your cart is empty</p>";
-    totalPriceDiv.innerText = "";
+    cartItems.innerHTML = "<p>Your cart is empty</p>";
+    totalEl.innerText = "0";
     return;
   }
 
-  let total = 0;
-
   cart.forEach((item, index) => {
-    total += item.price * item.qty;
+    total += Number(item.price) * Number(item.qty);
 
     const div = document.createElement("div");
-    div.className = "cart-item";
+    div.className = "item";
 
     div.innerHTML = `
-      <img src="${item.image}" alt="${item.name}">
-      <div class="cart-info">
-        <h4>${item.name}</h4>
-        <p>₹${item.price}</p>
-
-        <div class="qty-controls">
-          <button onclick="decreaseQty(${index})">−</button>
-          <span>${item.qty}</span>
-          <button onclick="increaseQty(${index})">+</button>
-        </div>
+      <img src="images/${item.image}">
+      <div>
+        <b>${item.name}</b><br>
+        ₹${item.price} × ${item.qty}
+        <br>
+        <button onclick="changeQty(${index}, -1)">−</button>
+        <button onclick="changeQty(${index}, 1)">+</button>
+        <button onclick="removeItem(${index})">Remove</button>
       </div>
     `;
 
-    cartItemsDiv.appendChild(div);
+    cartItems.appendChild(div);
   });
 
-  totalPriceDiv.innerText = "Total: ₹" + total;
-}
-
-function increaseQty(index) {
-  cart[index].qty += 1;
-  updateCart();
-}
-
-function decreaseQty(index) {
-  cart[index].qty -= 1;
-
-  if (cart[index].qty <= 0) {
-    cart.splice(index, 1);
-  }
-
-  updateCart();
-}
-
-function updateCart() {
+  totalEl.innerText = total;
   localStorage.setItem("cart", JSON.stringify(cart));
-  renderCart();
 }
+
+window.changeQty = function (index, change) {
+  cart[index].qty += change;
+  if (cart[index].qty <= 0) cart.splice(index, 1);
+  renderCart();
+};
+
+window.removeItem = function (index) {
+  cart.splice(index, 1);
+  renderCart();
+};
 
 renderCart();
