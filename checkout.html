@@ -2,68 +2,51 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Checkout</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout</title>
 
 <style>
-body{
-  background:#0f0f0f;
-  color:#fff;
-  font-family:Arial, sans-serif;
-  padding:20px;
+body {
+    background:#0f0f0f;
+    color:#fff;
+    font-family:Arial, sans-serif;
+    padding:20px;
 }
+
 h1{text-align:center}
 
-.info{
-  opacity:.85;
-  margin-bottom:15px;
-}
-
 .item{
-  background:#1c1c1c;
-  padding:12px;
-  border-radius:8px;
-  margin-bottom:10px;
+    background:#1c1c1c;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:10px;
 }
 
 .qty-btn{
-  padding:4px 10px;
-  border:none;
-  border-radius:4px;
-  cursor:pointer;
-  font-size:16px;
+    padding:4px 10px;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
 }
+
 .minus{background:#ff4444}
 .plus{background:#22c55e}
 
-.coupon{margin-top:20px}
-input{
-  padding:8px;
-  border-radius:6px;
-  border:none;
-  width:200px;
-}
-button{
-  padding:8px 14px;
-  border-radius:6px;
-  border:none;
-  cursor:pointer;
-  background:#facc15;
-  margin-left:5px;
-}
-
 .total{
-  font-size:20px;
-  font-weight:bold;
-  margin-top:20px;
+    font-size:20px;
+    font-weight:bold;
+    margin-top:20px;
 }
 
 .pay{
-  width:100%;
-  padding:14px;
-  font-size:18px;
-  background:#22c55e;
-  margin-top:20px;
+    width:100%;
+    padding:14px;
+    font-size:18px;
+    background:#22c55e;
+    border:none;
+    border-radius:8px;
+    margin-top:20px;
+    cursor:pointer;
 }
 </style>
 </head>
@@ -72,140 +55,105 @@ button{
 
 <h1>Checkout</h1>
 
-<div class="info">
-Coupons Available:<br>
-• <b>POKEMON10</b> – 10% off on ₹600+<br>
-• <b>WELCOME50</b> – ₹50 off on first order (₹300+)<br>
-• <b>EPIC50</b> – ₹50 off on ₹500+
-</div>
-
 <div id="items"></div>
-
-<div class="coupon">
-  <input type="text" id="coupon" placeholder="Enter coupon code">
-  <button onclick="applyCoupon()">Apply</button>
-</div>
 
 <div class="total" id="total">Total: ₹0</div>
 
 <button class="pay" onclick="placeOrder()">Place Order</button>
 
 <script>
-let cart = JSON.parse(localStorage.getItem("cart"));
 
-if (!cart || cart.length === 0) {
-    window.location.href = "cart.html";
-}
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
 let discount = 0;
 
+if(cart.length === 0){
+    document.getElementById("items").innerHTML = "<p>Your cart is empty</p>";
+}
+
 function renderCart(){
-  const box = document.getElementById("items");
-  box.innerHTML = "";
-  let total = 0;
+    const box = document.getElementById("items");
+    box.innerHTML = "";
+    let total = 0;
 
-  if(cart.length === 0){
-    box.innerHTML = "<p>Your cart is empty</p>";
-    document.getElementById("total").innerText = "Total: ₹0";
-    return;
-  }
+    cart.forEach((item,index)=>{
+        total += item.price * item.qty;
 
-  cart.forEach((item,index)=>{
-    total += item.price * item.qty;
+        box.innerHTML += `
+        <div class="item">
+            <b>${item.name}</b><br>
+            ₹${item.price} × ${item.qty}<br>
+            <button class="qty-btn minus" onclick="changeQty(${index},-1)">-</button>
+            <button class="qty-btn plus" onclick="changeQty(${index},1)">+</button>
+        </div>
+        `;
+    });
 
-    box.innerHTML += `
-      <div class="item">
-        <b>${item.name}</b><br>
-        ₹${item.price} × ${item.qty}<br><br>
-        <button class="qty-btn minus" onclick="changeQty(${index},-1)">−</button>
-        <button class="qty-btn plus" onclick="changeQty(${index},1)">+</button>
-      </div>
-    `;
-  });
+    total -= discount;
+    if(total < 0) total = 0;
 
-  total -= discount;
-  if(total < 0) total = 0;
-
-  document.getElementById("total").innerText = "Total: ₹" + total;
+    document.getElementById("total").innerText = "Total: ₹" + total;
 }
 
-function changeQty(index,change){
-  cart[index].qty += change;
-  if(cart[index].qty <= 0) cart.splice(index,1);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  discount = 0;
-  renderCart();
-}
+function changeQty(index, change){
+    cart[index].qty += change;
 
-function applyCoupon(){
-  const code = document.getElementById("coupon").value.toUpperCase();
-  const total = cart.reduce((s,i)=>s + i.price*i.qty,0);
-  const firstUsed = localStorage.getItem("firstOrderCompleted");
+    if(cart[index].qty <= 0){
+        cart.splice(index,1);
+    }
 
-  discount = 0;
-
-  if(code === "POKEMON10" && total >= 600){
-    discount = Math.floor(total * 0.10);
-  }
-  else if(code === "EPIC50" && total >= 500){
-    discount = 50;
-  }
-  else if(code === "WELCOME50" && total >= 300 && !firstUsed){
-    discount = 50;
-  }
-  else{
-    alert("Invalid coupon");
-  }
-
-  renderCart();
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
 }
 
 function placeOrder(){
-  if(cart.length === 0){
-    alert("Cart is empty");
-    return;
-  }
 
-  const totalText = document.getElementById("total").innerText;
+    if(cart.length === 0){
+        alert("Cart is empty");
+        return;
+    }
 
-  const order = {
-    id: "ORD-" + Date.now(),
-    items: cart,
-    total: totalText,
-    date: new Date().toLocaleString()
-  };
+    let totalAmount = 0;
+    cart.forEach(item=>{
+        totalAmount += item.price * item.qty;
+    });
 
-  orders.push(order);
-  localStorage.setItem("orders", JSON.stringify(orders));
-  localStorage.setItem("firstOrderCompleted","true");
+    const order = {
+        id: "ORD-" + Date.now(),
+        items: cart,
+        total: totalAmount,
+        date: new Date().toLocaleString()
+    };
 
-  const msg = encodeURIComponent(
-    `New Order\n\n` +
-    cart.map(i=>`${i.name} x ${i.qty}`).join("\n") +
-    `\n\n${totalText}`
-  );
+    orders.push(order);
+    localStorage.setItem("orders", JSON.stringify(orders));
 
-  localStorage.removeItem("cart");
+    // UPI LINK
+    const upiID = "6291582420@fam";   // your UPI
+    const name = "Epic Pokemon Store";
 
-let totalAmount = 0;
-cart.forEach(item => {
-    totalAmount += item.price * item.qty;
-});
+    const upiLink = `upi://pay?pa=${upiID}&pn=${name}&am=${totalAmount}&cu=INR`;
 
-const upiID = "6291582428@fam";   
-const name = "Epic Pokemon Store";
+    window.location.href = upiLink;
 
-const upiLink = `upi://pay?pa=${upiID}&pn=${name}&am=${totalAmount}&cu=INR`;
+    // After 3 seconds open WhatsApp
+    setTimeout(()=>{
+        const msg = encodeURIComponent(
+            "New Order\n\n" +
+            cart.map(i => `${i.name} × ${i.qty}`).join("\n") +
+            "\n\nTotal: ₹" + totalAmount
+        );
 
-// Open UPI
-window.location.href = upiLink;
+        window.open(`https://wa.me/919836190283?text=${msg}`, "_blank");
 
-// After 3 seconds open WhatsApp
-setTimeout(() => {
-    window.open(`https://wa.me/919836190283?text=${msg}`, "_blank");
-}, 3000);
+        // NOW clear cart (IMPORTANT — moved here)
+        localStorage.removeItem("cart");
+
+    },3000);
+}
 
 renderCart();
+
 </script>
 
 </body>
