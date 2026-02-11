@@ -91,7 +91,11 @@ Coupons Available:<br>
 <button class="pay" onclick="placeOrder()">Place Order</button>
 
 <script>
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cart = JSON.parse(localStorage.getItem("cart"));
+
+if (!cart || cart.length === 0) {
+    window.location.href = "cart.html";
+}
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
 let discount = 0;
 
