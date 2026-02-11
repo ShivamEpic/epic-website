@@ -183,8 +183,23 @@ function placeOrder(){
 
   localStorage.removeItem("cart");
 
-  window.open(`https://wa.me/919836190283?text=${msg}`, "_blank");
-}
+let totalAmount = 0;
+cart.forEach(item => {
+    totalAmount += item.price * item.qty;
+});
+
+const upiID = "6291582428@fam";   
+const name = "Epic Pokemon Store";
+
+const upiLink = `upi://pay?pa=${upiID}&pn=${name}&am=${totalAmount}&cu=INR`;
+
+// Open UPI
+window.location.href = upiLink;
+
+// After 3 seconds open WhatsApp
+setTimeout(() => {
+    window.open(`https://wa.me/919836190283?text=${msg}`, "_blank");
+}, 3000);
 
 renderCart();
 </script>
