@@ -2,35 +2,18 @@
 <html>
 <head>
   <title>Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body style="background:#111;color:white;font-family:Arial;padding:20px">
+<body style="background:#111;color:white;font-family:Arial;text-align:center;padding:50px">
 
-<h2>Login</h2>
+<h2>Login to Epic Pokémon Store</h2>
 
-<input id="email" placeholder="Email"><br><br>
-<input id="password" type="password" placeholder="Password"><br><br>
+<button id="googleBtn" style="padding:12px 20px;font-size:16px;">
+  Sign in with Google
+</button>
 
-<button onclick="login()">Login</button>
+<p id="userInfo"></p>
 
-<p>No account? <a href="signup.html">Sign up</a></p>
-
-<script>
-function login() {
-  const saved = JSON.parse(localStorage.getItem("user"));
-
-  if (!saved) {
-    alert("No account found");
-    return;
-  }
-
-  if (email.value === saved.email && password.value === saved.password) {
-    window.location.href = "account.html";
-  } else {
-    alert("Wrong credentials");
-  }
-}
-</script>
+<script type="module" src="login.js"></script>
 
 </body>
 </html>
